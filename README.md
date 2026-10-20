@@ -3,16 +3,9 @@
 (Just write your [Plan](https://w3.cs.jmu.edu/cs347/f26/project/plan/) right here in this README. You can edit this file however you like.)
 
 ## Sketch
-
-Your **design sketch** must...
-
-* **NOT DEPICT USER REGISTRATION, SIGN IN, NOR SIGNOUT**
-* depict the main "screens" for an unauthenticated user (e.g. landing page, else?)
-  * include possible url for each of these screens
-* depict the main "screens" for an authenticated user
-  * include possible url for each of these screens
-* depict user interface elements necessary to perform CRUD operations.
-* depict a navigation menu that will be present on all pages.
+<img width="2454" height="1633" alt="IMG_1935" src="https://github.com/user-attachments/assets/62a1e82c-2c91-4202-a4e7-afdd610bfdaa" />
+<img width="3024" height="2004" alt="IMG_1937" src="https://github.com/user-attachments/assets/0316de2c-eb17-4b33-91a7-198349d8b5a4" />
+<img width="3024" height="1713" alt="IMG_1936" src="https://github.com/user-attachments/assets/5b17ad8e-e23c-4ec9-98a8-71d6d5ec4845" />
 
 ## Narrative
 
@@ -36,5 +29,18 @@ Your **project narrative** must begin with the project title, your team name, an
 ## Claims
 
 Draft your expectation of which [claims](./claims.md) you will make for your project
+
+Intermediates:
+I50 - user input
+I60 - data import/export
+I70 - integrates external API
+I80 - provides its own API
+I90 - mobile responsiveness
+I170 - language translation
+I10 (maybe) - handles file uploads
+I20 - search functionality
+I89 - accessbility
+I150 - bulk operations (perform actions on multiple records at once)
+I100
 
 References are optional, but you may include "Works Cited" if that simplifies the explanation.
