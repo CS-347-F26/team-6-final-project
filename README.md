@@ -31,16 +31,16 @@ Your **project narrative** must begin with the project title, your team name, an
 Draft your expectation of which [claims](./claims.md) you will make for your project
 
 Intermediates:
-I50 - user input
-I60 - data import/export
-I70 - integrates external API
-I80 - provides its own API
-I90 - mobile responsiveness
-I170 - language translation
-I10 (maybe) - handles file uploads
-I20 - search functionality
-I89 - accessbility
-I150 - bulk operations (perform actions on multiple records at once)
-I100
+1. I50 - user input
+2. I60 - data import/export
+3. I70 - integrates external API
+4. I80 - provides its own API
+5. I90 - mobile responsiveness
+6. I170 - language translation
+7. I10 (maybe) - handles file uploads
+8. I20 - search functionality
+9. I89 - accessbility
+10. I150 - bulk operations (perform actions on multiple records at once)
+11. I100
 
 References are optional, but you may include "Works Cited" if that simplifies the explanation.
