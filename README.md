@@ -42,4 +42,10 @@ Intermediates:
 10. I150 - bulk operations (perform actions on multiple records at once)
 11. I100
 
+Stretch options:
+ - S10 - use a frontend framework
+ - S50 - has real time communication
+ - S60 - has real time collaboration
+ - S110 - add a machine learning integration
+
 References are optional, but you may include "Works Cited" if that simplifies the explanation.
