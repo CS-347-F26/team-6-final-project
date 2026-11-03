@@ -41,6 +41,7 @@ Intermediates:
 9. I89 - accessbility
 10. I150 - bulk operations (perform actions on multiple records at once)
 11. I100
+<img width="964" height="621" alt="Screenshot 2026-11-03 121344" src="https://github.com/user-attachments/assets/7df7f718-444d-43ba-825a-91efd118fec5" />
 
 Stretch options:
  - S10 - use a frontend framework
