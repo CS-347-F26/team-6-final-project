@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Historical Maps{% endblock %}</title>
+    <link rel="icon" href="https://fav.farm/🗺️" />
+    <link rel="stylesheet" crossorigin="anonymous" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+    <div>
+        <div>
+            <div>
+                {% block sidebar %}
+                <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="">All maps</a></li>
+                    <li><a href="">Pending georeferencing</a></li>
+    
+                    <br> <!-- Visual separation between navigation and auth links -->
+    
+                    {% if user.is_authenticated %}
+                        <li>User: {{ user.get_username }}</li>
+                        <li>
+                            <form id="logout-form" method="post" action="{% url 'account_logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'account_login' %}?next={{ request.path }}">Login</a></li>
+                        <li><a href="{% url 'account_signup' %}">Sign up</a></li>
+                    {% endif %}
+                </ul>
+                {% endblock %}
+            </div>
+            <div>{% block content %}{% endblock %}</div>
+        </div>
+    </div>
+</body>
+</html>

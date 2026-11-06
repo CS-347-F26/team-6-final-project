@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from datetime import date
 
 # === USER ===
 # Custom user model. It's empty on purpose. Django's AbstractUser already gives us
