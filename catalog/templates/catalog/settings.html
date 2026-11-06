@@ -42,9 +42,11 @@
 
         .brand {
             color: var(--green-dark);
+            display: inline-block;
             font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: .02em;
+            padding: 8px 0;
             text-decoration: none;
         }
 
@@ -52,8 +54,10 @@
 
         .back-link {
             color: var(--green-dark);
+            display: inline-block;
             font-family: Arial, sans-serif;
             font-size: .9rem;
+            padding: 12px 8px;
             text-underline-offset: 4px;
         }
 
@@ -77,6 +81,7 @@
             border-radius: 3px;
             color: var(--ink);
             font: inherit;
+            min-height: 44px;
             padding: 10px;
         }
 
@@ -87,6 +92,7 @@
             color: white;
             cursor: pointer;
             font: 700 .9rem Arial, sans-serif;
+            min-height: 44px;
             padding: 11px 16px;
         }
 
@@ -109,10 +115,11 @@
         }
 
         h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2.2rem, 6vw, 4rem);
             font-weight: 400;
             letter-spacing: -.04em;
             margin: 0 0 18px;
+            overflow-wrap: break-word;
         }
 
         .intro {
@@ -136,8 +143,11 @@
         a:focus-visible, button:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 
         @media (max-width: 480px) {
-            .site-header { padding: 18px 20px; }
+            .site-header { padding: 14px 20px; }
             main { margin-top: 26px; padding: 0 20px; }
+            .language-form { padding: 16px; }
+            .language-form button { width: 100%; }
+            .notice { padding: 20px; }
         }
     </style>
 </head>
