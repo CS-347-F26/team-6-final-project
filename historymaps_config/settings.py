@@ -50,7 +50,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom: logs each request (after auth so request.user is available)
+    'catalog.middleware.RequestLoggingMiddleware',
 ]
+
+# Send the catalog app's log messages (INFO and up) to the console
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'loggers': {
+        'catalog': {'handlers': ['console'], 'level': 'INFO'},
+    },
+}
 
 ROOT_URLCONF = 'historymaps_config.urls'
 
