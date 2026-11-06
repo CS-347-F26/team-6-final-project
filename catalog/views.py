@@ -1,3 +1,12 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import HistoricalMap
+
+
+def home(request):
+    maps = HistoricalMap.objects.all()
+    return render(request, "catalog/home.html", {"maps": maps})
+
+
+def settings(request):
+    return render(request, "catalog/settings.html")

@@ -1,0 +1,120 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Explore the history of the places around you through historical maps."
+msgstr "Explora la historia de los lugares que te rodean a través de mapas históricos."
+
+msgid "Then & There | History Maps"
+msgstr "Then & There | Mapas históricos"
+
+msgid "Settings"
+msgstr "Configuración"
+
+msgid "Main navigation"
+msgstr "Navegación principal"
+
+msgid "A window into the past"
+msgstr "Una ventana al pasado"
+
+msgid "History, right where you are."
+msgstr "Historia, justo donde estás."
+
+msgid "Discover how familiar places looked in another time. Explore historical maps and connect the landscape around you with the stories that came before."
+msgstr "Descubre cómo eran los lugares conocidos en otra época. Explora mapas históricos y conecta el paisaje que te rodea con las historias del pasado."
+
+msgid "Explore historical maps"
+msgstr "Explorar mapas históricos"
+
+msgid "The past is part of the place"
+msgstr "El pasado forma parte del lugar"
+
+msgid "See your surroundings in a new light."
+msgstr "Mira tu entorno con otros ojos."
+
+msgid "Old maps hold clues to how neighborhoods grew, roads shifted, and landmarks came to be. We’re bringing those maps into one place so you can explore the history beneath your feet."
+msgstr "Los mapas antiguos revelan cómo crecieron los vecindarios, cambiaron las calles y surgieron los lugares emblemáticos. Reunimos esos mapas para que puedas explorar la historia que hay bajo tus pies."
+
+msgid "01 / FIND"
+msgstr "01 / ENCUENTRA"
+
+msgid "Start where you are"
+msgstr "Empieza donde estás"
+
+msgid "Use your current location as the starting point for exploring the history around you."
+msgstr "Usa tu ubicación actual como punto de partida para explorar la historia que te rodea."
+
+msgid "02 / TRAVEL"
+msgstr "02 / VIAJA"
+
+msgid "Pick a moment in time"
+msgstr "Elige un momento en el tiempo"
+
+msgid "Browse maps from different years and see how the landscape changed."
+msgstr "Explora mapas de distintos años y descubre cómo cambió el paisaje."
+
+msgid "03 / DISCOVER"
+msgstr "03 / DESCUBRE"
+
+msgid "Notice what’s changed"
+msgstr "Observa qué ha cambiado"
+
+msgid "Compare the past and present, and uncover the stories of a place."
+msgstr "Compara el pasado con el presente y descubre las historias de cada lugar."
+
+msgid "Start exploring"
+msgstr "Empieza a explorar"
+
+msgid "Historical maps"
+msgstr "Mapas históricos"
+
+msgid "A growing collection of places and times."
+msgstr "Una colección de lugares y épocas que sigue creciendo."
+
+msgid "Source:"
+msgstr "Fuente:"
+
+msgid "Map alignment available"
+msgstr "Mapa georreferenciado"
+
+msgid "Map alignment in progress"
+msgstr "Georreferenciación en curso"
+
+msgid "Maps are being added"
+msgstr "Estamos agregando mapas"
+
+msgid "There aren’t any historical maps to explore just yet. Check back as the collection grows."
+msgstr "Todavía no hay mapas históricos para explorar. Vuelve pronto para ver cómo crece la colección."
+
+msgid "Explore the stories held in the places around you."
+msgstr "Explora las historias que guardan los lugares que te rodean."
+
+msgid "Settings for Then & There history maps."
+msgstr "Configuración de los mapas históricos de Then & There."
+
+msgid "Settings | Then & There"
+msgstr "Configuración | Then & There"
+
+msgid "Back to home"
+msgstr "Volver al inicio"
+
+msgid "Make it yours"
+msgstr "Personaliza tu experiencia"
+
+msgid "Manage your experience exploring historical places."
+msgstr "Administra tu experiencia al explorar lugares históricos."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Save language"
+msgstr "Guardar idioma"
+
+msgid "More preferences coming soon"
+msgstr "Más preferencias próximamente"
+
+msgid "Options for location and map preferences are not available yet. For now, you can head back and explore the historical map collection."
+msgstr "Las opciones de ubicación y preferencias de mapas aún no están disponibles. Por ahora, puedes volver y explorar la colección de mapas históricos."

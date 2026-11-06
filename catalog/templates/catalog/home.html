@@ -1,0 +1,322 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% trans 'Explore the history of the places around you through historical maps.' %}">
+    <title>{% trans "Then & There | History Maps" %}</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #1d2925;
+            --muted: #65716a;
+            --paper: #f7f5ef;
+            --white: #fffefa;
+            --green: #245c49;
+            --green-dark: #193f33;
+            --line: #dedfd5;
+            --gold: #c38b43;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        a { color: inherit; }
+
+        .site-header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+            max-width: 1160px;
+            padding: 22px 28px;
+        }
+
+        .brand {
+            color: var(--green-dark);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            text-decoration: none;
+        }
+
+        .brand span { color: var(--gold); }
+
+        .header-link {
+            color: var(--green-dark);
+            font-family: Arial, sans-serif;
+            font-size: .9rem;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 4px;
+        }
+
+        .hero {
+            background:
+                radial-gradient(ellipse at 82% 18%, rgb(196 174 124 / 20%), transparent 34%),
+                linear-gradient(120deg, #e8ebdf, #f3efe3 68%, #e8e4d7);
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-inner {
+            margin: 0 auto;
+            max-width: 1160px;
+            min-height: 430px;
+            padding: 76px 28px 70px;
+            position: relative;
+        }
+
+        .hero-copy { max-width: 600px; position: relative; z-index: 1; }
+
+        .eyebrow {
+            color: var(--green);
+            font-family: Arial, sans-serif;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .16em;
+            margin: 0 0 18px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 400;
+            letter-spacing: -.045em;
+            line-height: 1.03;
+            margin: 0;
+            max-width: 600px;
+        }
+
+        .hero-description {
+            color: #48564e;
+            font-family: Arial, sans-serif;
+            font-size: 1.08rem;
+            line-height: 1.7;
+            margin: 22px 0 30px;
+            max-width: 490px;
+        }
+
+        .button {
+            background: var(--green);
+            border-radius: 4px;
+            color: white;
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            font-size: .92rem;
+            font-weight: 700;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .button:hover { background: var(--green-dark); transform: translateY(-1px); }
+        .button:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+        .map-art {
+            height: 330px;
+            opacity: .8;
+            position: absolute;
+            right: -25px;
+            top: 50px;
+            transform: rotate(-8deg);
+            width: 430px;
+        }
+
+        .map-art svg { height: 100%; width: 100%; }
+
+        .intro {
+            margin: 0 auto;
+            max-width: 1160px;
+            padding: 68px 28px 52px;
+        }
+
+        .intro h2, .maps h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 400;
+            letter-spacing: -.025em;
+            margin: 0 0 14px;
+        }
+
+        .intro p {
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            line-height: 1.75;
+            margin: 0;
+            max-width: 680px;
+        }
+
+        .steps {
+            border-bottom: 1px solid var(--line);
+            border-top: 1px solid var(--line);
+            display: grid;
+            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 36px;
+            padding: 26px 0;
+        }
+
+        .step-number {
+            color: var(--gold);
+            font-family: Arial, sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .step h3 { font-size: 1.2rem; font-weight: 400; margin: 9px 0 6px; }
+        .step p { font-size: .9rem; }
+
+        .maps {
+            background: #eeece3;
+            padding: 58px 28px 72px;
+            scroll-margin-top: 20px;
+        }
+
+        .maps-inner { margin: 0 auto; max-width: 1104px; }
+        .maps-subtitle { color: var(--muted); font-family: Arial, sans-serif; margin: 0 0 24px; }
+
+        .map-list {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+
+        .map-card, .empty-state {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 22px;
+        }
+
+        .map-year {
+            color: var(--green);
+            font-family: Arial, sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .map-card h3 { font-size: 1.35rem; font-weight: 400; margin: 10px 0; }
+        .map-card p, .empty-state p { color: var(--muted); font-family: Arial, sans-serif; font-size: .9rem; line-height: 1.6; }
+
+        .empty-state { max-width: 680px; }
+        .empty-state p { margin-bottom: 0; }
+
+        footer {
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: .82rem;
+            padding: 22px 28px;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .hero-inner { min-height: 480px; padding-top: 58px; }
+            .map-art { bottom: -90px; opacity: .35; right: -110px; top: auto; }
+            .steps { gap: 22px; grid-template-columns: 1fr; }
+            .intro { padding-bottom: 42px; padding-top: 48px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{% url 'home' %}">Then <span>&amp;</span> There</a>
+        <nav aria-label="{% trans 'Main navigation' %}">
+            <a class="header-link" href="{% url 'settings' %}">{% trans "Settings" %}</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow">{% trans "A window into the past" %}</p>
+                    <h1>{% trans "History, right where you are." %}</h1>
+                    <p class="hero-description">
+                        {% blocktrans %}Discover how familiar places looked in another time.
+                        Explore historical maps and connect the landscape around
+                        you with the stories that came before.{% endblocktrans %}
+                    </p>
+                    <a class="button" href="#maps">{% trans "Explore historical maps" %}</a>
+                </div>
+                <div class="map-art" aria-hidden="true">
+                    <svg viewBox="0 0 430 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M56 18 372 47 341 300 24 270 56 18Z" fill="#F8F5E9" stroke="#8E997B" stroke-width="2"/>
+                        <path d="m43 84 310 37M36 143l302 42M29 207l301 41M116 24l-28 250M190 31l-29 249M269 39l-29 249M337 45l-31 249" stroke="#BCC2A7" stroke-width="1.5"/>
+                        <path d="M61 60c50 17 61-19 108-3s57 31 105 13 54-7 79 4M44 168c37-28 65-19 96-3s65 12 95-5 72-13 107 7M65 225c46-21 75-18 109-1s60 19 91 0 49-18 70-12" stroke="#C38B43" stroke-width="3"/>
+                        <path d="M151 94c19-20 40-20 59-2 17 16 19 39 2 58l-31 39-30-39c-16-19-17-40 0-56Z" fill="#245C49"/>
+                        <circle cx="181" cy="126" r="13" fill="#F8F5E9"/>
+                        <path d="M185 204h73M185 216h51M185 228h65" stroke="#8E997B" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section class="intro">
+            <p class="eyebrow">{% trans "The past is part of the place" %}</p>
+            <h2>{% trans "See your surroundings in a new light." %}</h2>
+            <p>
+                {% blocktrans %}Old maps hold clues to how neighborhoods grew, roads shifted,
+                and landmarks came to be. We’re bringing those maps into one
+                place so you can explore the history beneath your feet.{% endblocktrans %}
+            </p>
+            <div class="steps">
+                <article class="step">
+                    <span class="step-number">{% trans "01 / FIND" %}</span>
+                    <h3>{% trans "Start where you are" %}</h3>
+                    <p>{% trans "Use your current location as the starting point for exploring the history around you." %}</p>
+                </article>
+                <article class="step">
+                    <span class="step-number">{% trans "02 / TRAVEL" %}</span>
+                    <h3>{% trans "Pick a moment in time" %}</h3>
+                    <p>{% trans "Browse maps from different years and see how the landscape changed." %}</p>
+                </article>
+                <article class="step">
+                    <span class="step-number">{% trans "03 / DISCOVER" %}</span>
+                    <h3>{% trans "Notice what’s changed" %}</h3>
+                    <p>{% trans "Compare the past and present, and uncover the stories of a place." %}</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="maps" id="maps">
+            <div class="maps-inner">
+                <p class="eyebrow">{% trans "Start exploring" %}</p>
+                <h2>{% trans "Historical maps" %}</h2>
+                <p class="maps-subtitle">{% trans "A growing collection of places and times." %}</p>
+                {% if maps %}
+                    <div class="map-list">
+                        {% for map in maps %}
+                            <article class="map-card">
+                                <span class="map-year">{{ map.year }}</span>
+                                <h3>{{ map.title }}</h3>
+                                {% if map.source %}<p>{% trans "Source:" %} {{ map.source }}</p>{% endif %}
+                                <p>{% if map.is_georeferenced %}{% trans "Map alignment available" %}{% else %}{% trans "Map alignment in progress" %}{% endif %}</p>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <h3>{% trans "Maps are being added" %}</h3>
+                        <p>{% trans "There aren’t any historical maps to explore just yet. Check back as the collection grows." %}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+    <footer>{% trans "Explore the stories held in the places around you." %}</footer>
+</body>
+</html>

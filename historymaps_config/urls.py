@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from django.views.generic import RedirectView
+from catalog import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('catalog/', include('catalog.urls')),
-    path('', RedirectView.as_view(url='catalog/')),
+    path('', views.home, name='home'),
+    path('settings/', views.settings, name='settings'),
 ]
 
 from django.conf import settings
