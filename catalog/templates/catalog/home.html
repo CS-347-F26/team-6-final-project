@@ -42,9 +42,11 @@
 
         .brand {
             color: var(--green-dark);
+            display: inline-block;
             font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: .02em;
+            padding: 8px 0;
             text-decoration: none;
         }
 
@@ -52,8 +54,10 @@
 
         .header-link {
             color: var(--green-dark);
+            display: inline-block;
             font-family: Arial, sans-serif;
             font-size: .9rem;
+            padding: 12px 8px;
             text-decoration-thickness: 1px;
             text-underline-offset: 4px;
         }
@@ -88,12 +92,13 @@
         }
 
         h1 {
-            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-size: clamp(2.3rem, 6vw, 5rem);
             font-weight: 400;
             letter-spacing: -.045em;
             line-height: 1.03;
             margin: 0;
             max-width: 600px;
+            overflow-wrap: break-word;
         }
 
         .hero-description {
@@ -187,7 +192,7 @@
         .map-list {
             display: grid;
             gap: 16px;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
         }
 
         .map-card, .empty-state {
@@ -220,10 +225,19 @@
         }
 
         @media (max-width: 700px) {
-            .hero-inner { min-height: 480px; padding-top: 58px; }
+            .hero-inner { min-height: 480px; padding-top: 58px; padding-bottom: 110px; }
             .map-art { bottom: -90px; opacity: .35; right: -110px; top: auto; }
             .steps { gap: 22px; grid-template-columns: 1fr; }
             .intro { padding-bottom: 42px; padding-top: 48px; }
+            .maps { padding-bottom: 56px; padding-top: 44px; }
+        }
+
+        @media (max-width: 480px) {
+            .site-header { padding: 14px 20px; }
+            .hero-inner { padding-left: 20px; padding-right: 20px; }
+            .intro { padding-left: 20px; padding-right: 20px; }
+            .maps { padding-left: 20px; padding-right: 20px; }
+            .button { text-align: center; width: 100%; }
         }
 
         @media (prefers-reduced-motion: reduce) {
