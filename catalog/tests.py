@@ -3,6 +3,14 @@ from django.test import TestCase
 from .models import HistoricalMap
 
 
+# Checks the custom middleware logs each request with method, path, and status
+class RequestLoggingMiddlewareTests(TestCase):
+    def test_request_is_logged(self):
+        with self.assertLogs("catalog", level="INFO") as logs:
+            self.client.get("/")
+        self.assertIn("GET / -> 200", logs.output[0])
+
+
 class HomePageTests(TestCase):
     def test_homepage_loads(self):
         response = self.client.get("/")
