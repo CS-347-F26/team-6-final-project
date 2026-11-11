@@ -1,0 +1,99 @@
+:root {
+    color-scheme: light;
+    --ink: #1d2925;
+    --muted: #65716a;
+    --paper: #f7f5ef;
+    --white: #fffefa;
+    --green: #245c49;
+    --green-dark: #193f33;
+    --line: #dedfd5;
+    --gold: #c38b43;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+a { color: inherit; }
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 4px;
+}
+
+/* Header */
+.site-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1160px;
+    padding: 22px 28px;
+}
+
+.brand {
+    color: var(--green-dark);
+    display: inline-block;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    padding: 8px 0;
+    text-decoration: none;
+}
+
+.brand span { color: var(--gold); }
+
+.header-link {
+    color: var(--green-dark);
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: .9rem;
+    padding: 12px 8px;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+/* Shared components */
+.eyebrow {
+    color: var(--green);
+    font-family: Arial, sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+}
+
+.button {
+    background: var(--green);
+    border-radius: 4px;
+    color: white;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: .92rem;
+    font-weight: 700;
+    padding: 14px 20px;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.button:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+@media (max-width: 480px) {
+    .site-header { padding: 14px 20px; }
+    .button { text-align: center; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

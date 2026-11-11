@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n static %}
 {% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -7,243 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{% trans 'Explore the history of the places around you through historical maps.' %}">
     <title>{% trans "Then & There | History Maps" %}</title>
-    <style>
-        :root {
-            color-scheme: light;
-            --ink: #1d2925;
-            --muted: #65716a;
-            --paper: #f7f5ef;
-            --white: #fffefa;
-            --green: #245c49;
-            --green-dark: #193f33;
-            --line: #dedfd5;
-            --gold: #c38b43;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            background: var(--paper);
-            color: var(--ink);
-            font-family: Georgia, "Times New Roman", serif;
-        }
-
-        a { color: inherit; }
-
-        .site-header {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            margin: 0 auto;
-            max-width: 1160px;
-            padding: 22px 28px;
-        }
-
-        .brand {
-            color: var(--green-dark);
-            display: inline-block;
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: .02em;
-            padding: 8px 0;
-            text-decoration: none;
-        }
-
-        .brand span { color: var(--gold); }
-
-        .header-link {
-            color: var(--green-dark);
-            display: inline-block;
-            font-family: Arial, sans-serif;
-            font-size: .9rem;
-            padding: 12px 8px;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 4px;
-        }
-
-        .hero {
-            background:
-                radial-gradient(ellipse at 82% 18%, rgb(196 174 124 / 20%), transparent 34%),
-                linear-gradient(120deg, #e8ebdf, #f3efe3 68%, #e8e4d7);
-            border-bottom: 1px solid var(--line);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero-inner {
-            margin: 0 auto;
-            max-width: 1160px;
-            min-height: 430px;
-            padding: 76px 28px 70px;
-            position: relative;
-        }
-
-        .hero-copy { max-width: 600px; position: relative; z-index: 1; }
-
-        .eyebrow {
-            color: var(--green);
-            font-family: Arial, sans-serif;
-            font-size: .75rem;
-            font-weight: 700;
-            letter-spacing: .16em;
-            margin: 0 0 18px;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: clamp(2.3rem, 6vw, 5rem);
-            font-weight: 400;
-            letter-spacing: -.045em;
-            line-height: 1.03;
-            margin: 0;
-            max-width: 600px;
-            overflow-wrap: break-word;
-        }
-
-        .hero-description {
-            color: #48564e;
-            font-family: Arial, sans-serif;
-            font-size: 1.08rem;
-            line-height: 1.7;
-            margin: 22px 0 30px;
-            max-width: 490px;
-        }
-
-        .button {
-            background: var(--green);
-            border-radius: 4px;
-            color: white;
-            display: inline-block;
-            font-family: Arial, sans-serif;
-            font-size: .92rem;
-            font-weight: 700;
-            padding: 14px 20px;
-            text-decoration: none;
-            transition: background .2s ease, transform .2s ease;
-        }
-
-        .button:hover { background: var(--green-dark); transform: translateY(-1px); }
-        .button:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
-
-        .map-art {
-            height: 330px;
-            opacity: .8;
-            position: absolute;
-            right: -25px;
-            top: 50px;
-            transform: rotate(-8deg);
-            width: 430px;
-        }
-
-        .map-art svg { height: 100%; width: 100%; }
-
-        .intro {
-            margin: 0 auto;
-            max-width: 1160px;
-            padding: 68px 28px 52px;
-        }
-
-        .intro h2, .maps h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            font-weight: 400;
-            letter-spacing: -.025em;
-            margin: 0 0 14px;
-        }
-
-        .intro p {
-            color: var(--muted);
-            font-family: Arial, sans-serif;
-            line-height: 1.75;
-            margin: 0;
-            max-width: 680px;
-        }
-
-        .steps {
-            border-bottom: 1px solid var(--line);
-            border-top: 1px solid var(--line);
-            display: grid;
-            gap: 30px;
-            grid-template-columns: repeat(3, 1fr);
-            margin-top: 36px;
-            padding: 26px 0;
-        }
-
-        .step-number {
-            color: var(--gold);
-            font-family: Arial, sans-serif;
-            font-size: .78rem;
-            font-weight: 700;
-            letter-spacing: .12em;
-        }
-
-        .step h3 { font-size: 1.2rem; font-weight: 400; margin: 9px 0 6px; }
-        .step p { font-size: .9rem; }
-
-        .maps {
-            background: #eeece3;
-            padding: 58px 28px 72px;
-            scroll-margin-top: 20px;
-        }
-
-        .maps-inner { margin: 0 auto; max-width: 1104px; }
-        .maps-subtitle { color: var(--muted); font-family: Arial, sans-serif; margin: 0 0 24px; }
-
-        .map-list {
-            display: grid;
-            gap: 16px;
-            grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
-        }
-
-        .map-card, .empty-state {
-            background: var(--white);
-            border: 1px solid var(--line);
-            border-radius: 5px;
-            padding: 22px;
-        }
-
-        .map-year {
-            color: var(--green);
-            font-family: Arial, sans-serif;
-            font-size: .78rem;
-            font-weight: 700;
-            letter-spacing: .12em;
-        }
-
-        .map-card h3 { font-size: 1.35rem; font-weight: 400; margin: 10px 0; }
-        .map-card p, .empty-state p { color: var(--muted); font-family: Arial, sans-serif; font-size: .9rem; line-height: 1.6; }
-
-        .empty-state { max-width: 680px; }
-        .empty-state p { margin-bottom: 0; }
-
-        footer {
-            color: var(--muted);
-            font-family: Arial, sans-serif;
-            font-size: .82rem;
-            padding: 22px 28px;
-            text-align: center;
-        }
-
-        @media (max-width: 700px) {
-            .hero-inner { min-height: 480px; padding-top: 58px; padding-bottom: 110px; }
-            .map-art { bottom: -90px; opacity: .35; right: -110px; top: auto; }
-            .steps { gap: 22px; grid-template-columns: 1fr; }
-            .intro { padding-bottom: 42px; padding-top: 48px; }
-            .maps { padding-bottom: 56px; padding-top: 44px; }
-        }
-
-        @media (max-width: 480px) {
-            .site-header { padding: 14px 20px; }
-            .hero-inner { padding-left: 20px; padding-right: 20px; }
-            .intro { padding-left: 20px; padding-right: 20px; }
-            .maps { padding-left: 20px; padding-right: 20px; }
-            .button { text-align: center; width: 100%; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'catalog/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'catalog/css/home.css' %}">
 </head>
 <body>
     <header class="site-header">
@@ -252,7 +17,7 @@
             <a class="header-link" href="{% url 'settings' %}">{% trans "Settings" %}</a>
         </nav>
     </header>
-
+ 
     <main>
         <section class="hero">
             <div class="hero-inner">
@@ -278,7 +43,7 @@
                 </div>
             </div>
         </section>
-
+ 
         <section class="intro">
             <p class="eyebrow">{% trans "The past is part of the place" %}</p>
             <h2>{% trans "See your surroundings in a new light." %}</h2>
@@ -305,7 +70,7 @@
                 </article>
             </div>
         </section>
-
+ 
         <section class="maps" id="maps">
             <div class="maps-inner">
                 <p class="eyebrow">{% trans "Start exploring" %}</p>
@@ -331,6 +96,6 @@
             </div>
         </section>
     </main>
-    <footer>{% trans "Explore the stories held in the places around you." %}</footer>
+    <footer class="site-footer">{% trans "Explore the stories held in the places around you." %}</footer>
 </body>
 </html>
