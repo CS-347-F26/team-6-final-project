@@ -1,12 +1,38 @@
 from django.shortcuts import render
-
+from django.db.models import Q
 from .models import HistoricalMap
+from .forms import MapSearchForm
 
 
 def home(request):
+    form = MapSearchForm(request.GET)
     maps = HistoricalMap.objects.all()
-    return render(request, "catalog/home.html", {"maps": maps})
 
+    if form.is_valid():
+        query = form.cleaned_data.get('query')
+        year = form.cleaned_data.get('year')
+        lat = form.cleaned_data.get('lat')
+        lng = form.cleaned_data.get('lng')
+
+        # Filter by name/location text in the title or source
+        if query:
+            maps = maps.filter(
+                Q(title__icontains=query) | 
+                Q(source__icontains=query)
+            )
+        
+        # Filter by exact year
+        if year:
+            maps = maps.filter(year=year)
+
+        # Filter by coordinates (is the point inside the map's bounding box?)
+        if lat is not None and lng is not None:
+            maps = maps.filter(
+                south__lte=lat, north__gte=lat,
+                west__lte=lng, east__gte=lng
+            )
+
+    return render(request, "catalog/home.html", {"maps": maps, "form": form})
 
 def settings(request):
     return render(request, "catalog/settings.html")
