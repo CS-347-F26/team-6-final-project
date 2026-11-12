@@ -5,7 +5,13 @@ from .forms import MapSearchForm
 
 
 def home(request):
-    form = MapSearchForm(request.GET)
+    # Only bind the form data if the user has actually submitted a search (request.GET contains data).
+    # Otherwise, display a fresh, unbound form.
+    if request.GET:
+        form = MapSearchForm(request.GET)
+    else:
+        form = MapSearchForm()
+        
     maps = HistoricalMap.objects.all()
 
     if form.is_valid():

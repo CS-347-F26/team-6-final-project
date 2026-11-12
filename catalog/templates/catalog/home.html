@@ -75,10 +75,22 @@
             <div class="maps-inner">
                 <div class="search-container" style="margin-bottom: 30px; background: var(--white); padding: 20px; border-radius: 5px; border: 1px solid var(--line);">
                     <form method="GET" action="{% url 'home' %}" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                        {{ form.query }}
-                        {{ form.year }}
-                        {{ form.lat }}
-                        {{ form.lng }}
+                        <div>
+                            {{ form.query }}
+                        </div>
+
+                        <div>
+                            {{ form.year }}
+                        </div>
+
+                        <div>
+                            {{ form.lat }}
+                        </div>
+
+                        <div>
+                            {{ form.lng }}
+                        </div>
+
                         <button type="submit" class="button" style="padding: 10px 15px;">Search Maps</button>
                         <a href="{% url 'home' %}" style="color: var(--green); text-decoration: none; font-size: 0.9rem;">Clear</a>
                     </form>
