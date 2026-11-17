@@ -37,11 +37,10 @@ Intermediates:
 5. ~~I90 - mobile responsiveness~~
 6. ~~I170 - language translation~~
 7. I10 (maybe) - handles file uploads
-8. I20 - search functionality
-9. I89 - accessbility
-10. I150 - bulk operations (perform actions on multiple records at once)
-11. I100
-12. ~~I20 - app has search functionality~~
+8. I89 - accessbility
+9. I150 - bulk operations (perform actions on multiple records at once)
+10. I100
+11. ~~I20 - app has search functionality~~
 <img width="964" height="621" alt="Screenshot 2026-11-03 121344" src="https://github.com/user-attachments/assets/7df7f718-444d-43ba-825a-91efd118fec5" />
 
 Stretch options:
