@@ -1,45 +1,39 @@
+{% extends "base_generic.html" %}
 {% load i18n static %}
-{% get_current_language as LANGUAGE_CODE %}
-<!doctype html>
-<html lang="{{ LANGUAGE_CODE }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% trans 'Settings for Then & There history maps.' %}">
-    <title>{% trans "Settings | Then & There" %}</title>
-    <link rel="stylesheet" href="{% static 'catalog/css/base.css' %}">
+
+{% block title %}{% trans "Settings | Then & There" %}{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'catalog/css/settings.css' %}">
-</head>
-<body>
-    <header class="site-header">
-        <a class="brand" href="{% url 'home' %}">Then <span>&amp;</span> There</a>
-        <a class="header-link" href="{% url 'home' %}">{% trans "Back to home" %}</a>
-    </header>
-    <main class="settings">
-        <p class="eyebrow">{% trans "Make it yours" %}</p>
-        <h1>{% trans "Settings" %}</h1>
-        <p class="settings-intro">
-            {% trans "Manage your experience exploring historical places." %}
+{% endblock %}
+
+{% block main_class %}settings{% endblock %}
+
+{% block content %}
+    <p class="eyebrow">{% trans "Make it yours" %}</p>
+    <h1>{% trans "Settings" %}</h1>
+    <p class="settings-intro">
+        {% trans "Manage your experience exploring historical places." %}
+    </p>
+    
+    <form class="language-form" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <div class="language-field">
+            <label for="language">{% trans "Language" %}</label>
+            <select id="language" name="language">
+                {% for code, name in LANGUAGES %}
+                    <option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit">{% trans "Save language" %}</button>
+    </form>
+    
+    <section class="notice" aria-labelledby="preferences-heading">
+        <h2 id="preferences-heading">{% trans "More preferences coming soon" %}</h2>
+        <p>
+            {% trans "Options for location and map preferences are not available yet. For now, you can head back and explore the historical map collection." %}
         </p>
-        <form class="language-form" action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <div class="language-field">
-                <label for="language">{% trans "Language" %}</label>
-                <select id="language" name="language">
-                    {% for code, name in LANGUAGES %}
-                        <option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit">{% trans "Save language" %}</button>
-        </form>
-        <section class="notice" aria-labelledby="preferences-heading">
-            <h2 id="preferences-heading">{% trans "More preferences coming soon" %}</h2>
-            <p>
-                {% trans "Options for location and map preferences are not available yet. For now, you can head back and explore the historical map collection." %}
-            </p>
-        </section>
-    </main>
-</body>
-</html>
+    </section>
+{% endblock %}

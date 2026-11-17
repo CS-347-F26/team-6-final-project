@@ -1,7 +1,8 @@
-from django.shortcuts import render
 from django.db.models import Q
-from .models import HistoricalMap
+from django.shortcuts import render
+
 from .forms import MapSearchForm
+from .models import HistoricalMap
 
 
 def home(request):
@@ -11,22 +12,19 @@ def home(request):
         form = MapSearchForm(request.GET)
     else:
         form = MapSearchForm()
-        
+
     maps = HistoricalMap.objects.all()
 
     if form.is_valid():
-        query = form.cleaned_data.get('query')
-        year = form.cleaned_data.get('year')
-        lat = form.cleaned_data.get('lat')
-        lng = form.cleaned_data.get('lng')
+        query = form.cleaned_data.get("query")
+        year = form.cleaned_data.get("year")
+        lat = form.cleaned_data.get("lat")
+        lng = form.cleaned_data.get("lng")
 
         # Filter by name/location text in the title or source
         if query:
-            maps = maps.filter(
-                Q(title__icontains=query) | 
-                Q(source__icontains=query)
-            )
-        
+            maps = maps.filter(Q(title__icontains=query) | Q(source__icontains=query))
+
         # Filter by exact year
         if year:
             maps = maps.filter(year=year)
@@ -34,14 +32,15 @@ def home(request):
         # Filter by coordinates (is the point inside the map's bounding box?)
         if lat is not None and lng is not None:
             maps = maps.filter(
-                south__lte=lat, north__gte=lat,
-                west__lte=lng, east__gte=lng
+                south__lte=lat, north__gte=lat, west__lte=lng, east__gte=lng
             )
 
     return render(request, "catalog/home.html", {"maps": maps, "form": form})
 
+
 def settings(request):
     return render(request, "catalog/settings.html")
+
 
 def index(request):
     """View function for home page of site."""
@@ -54,10 +53,15 @@ def index(request):
     num_pending = HistoricalMap.objects.filter(is_georeferenced=False).count()
 
     context = {
-        'num_maps': num_maps,
-        'num_georeferenced': num_georeferenced,
-        'num_pending': num_pending,
+        "num_maps": num_maps,
+        "num_georeferenced": num_georeferenced,
+        "num_pending": num_pending,
     }
 
     # Render the HTML template with the data in the context variable
-    return render(request, 'index.html', context=context)
+    return render(request, "index.html", context=context)
+
+
+def help_page(request):
+    """View function for the Help/Tooltips page."""
+    return render(request, "catalog/help.html")

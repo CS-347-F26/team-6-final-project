@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from datetime import date
 
+
 # === USER ===
 # Custom user model. It's empty on purpose. Django's AbstractUser already gives us
 # id, username, email, a hashed password, and date_joined, which covers everything
@@ -48,7 +49,11 @@ class HistoricalMap(models.Model):
 
     # Rejects flipped bounds (for example north below south) in the admin site
     def clean(self):
-        if self.north is not None and self.south is not None and self.north <= self.south:
+        if (
+            self.north is not None
+            and self.south is not None
+            and self.north <= self.south
+        ):
             raise ValidationError("North must be greater than south.")
         if self.east is not None and self.west is not None and self.east <= self.west:
             raise ValidationError("East must be greater than west.")

@@ -1,123 +1,111 @@
+{% extends "base_generic.html" %}
 {% load i18n static %}
-{% get_current_language as LANGUAGE_CODE %}
-<!doctype html>
-<html lang="{{ LANGUAGE_CODE }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% trans 'Explore the history of the places around you through historical maps.' %}">
-    <title>{% trans "Then & There | History Maps" %}</title>
-    <link rel="stylesheet" href="{% static 'catalog/css/base.css' %}">
+
+{% block title %}{% trans "Then & There | History Maps" %}{% endblock %}
+
+{% block meta_description %}{% trans 'Explore the history of the places around you through historical maps.' %}{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'catalog/css/home.css' %}">
-</head>
-<body>
-    <header class="site-header">
-        <a class="brand" href="{% url 'home' %}">Then <span>&amp;</span> There</a>
-        <nav aria-label="{% trans 'Main navigation' %}">
-            <a class="header-link" href="{% url 'settings' %}">{% trans "Settings" %}</a>
-        </nav>
-    </header>
- 
-    <main>
-        <section class="hero">
-            <div class="hero-inner">
-                <div class="hero-copy">
-                    <p class="eyebrow">{% trans "A window into the past" %}</p>
-                    <h1>{% trans "History, right where you are." %}</h1>
-                    <p class="hero-description">
-                        {% blocktrans %}Discover how familiar places looked in another time.
-                        Explore historical maps and connect the landscape around
-                        you with the stories that came before.{% endblocktrans %}
-                    </p>
-                    <a class="button" href="#maps">{% trans "Explore historical maps" %}</a>
-                </div>
-                <div class="map-art" aria-hidden="true">
-                    <svg viewBox="0 0 430 330" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M56 18 372 47 341 300 24 270 56 18Z" fill="#F8F5E9" stroke="#8E997B" stroke-width="2"/>
-                        <path d="m43 84 310 37M36 143l302 42M29 207l301 41M116 24l-28 250M190 31l-29 249M269 39l-29 249M337 45l-31 249" stroke="#BCC2A7" stroke-width="1.5"/>
-                        <path d="M61 60c50 17 61-19 108-3s57 31 105 13 54-7 79 4M44 168c37-28 65-19 96-3s65 12 95-5 72-13 107 7M65 225c46-21 75-18 109-1s60 19 91 0 49-18 70-12" stroke="#C38B43" stroke-width="3"/>
-                        <path d="M151 94c19-20 40-20 59-2 17 16 19 39 2 58l-31 39-30-39c-16-19-17-40 0-56Z" fill="#245C49"/>
-                        <circle cx="181" cy="126" r="13" fill="#F8F5E9"/>
-                        <path d="M185 204h73M185 216h51M185 228h65" stroke="#8E997B" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                </div>
+{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <p class="eyebrow">{% trans "A window into the past" %}</p>
+                <h1>{% trans "History, right where you are." %}</h1>
+                <p class="hero-description">
+                    {% blocktrans %}Discover how familiar places looked in another time.
+                    Explore historical maps and connect the landscape around
+                    you with the stories that came before.{% endblocktrans %}
+                </p>
+                <a class="button" href="#maps">{% trans "Explore historical maps" %}</a>
             </div>
-        </section>
- 
-        <section class="intro">
-            <p class="eyebrow">{% trans "The past is part of the place" %}</p>
-            <h2>{% trans "See your surroundings in a new light." %}</h2>
-            <p>
-                {% blocktrans %}Old maps hold clues to how neighborhoods grew, roads shifted,
-                and landmarks came to be. We’re bringing those maps into one
-                place so you can explore the history beneath your feet.{% endblocktrans %}
-            </p>
-            <div class="steps">
-                <article class="step">
-                    <span class="step-number">{% trans "01 / FIND" %}</span>
-                    <h3>{% trans "Start where you are" %}</h3>
-                    <p>{% trans "Use your current location as the starting point for exploring the history around you." %}</p>
-                </article>
-                <article class="step">
-                    <span class="step-number">{% trans "02 / TRAVEL" %}</span>
-                    <h3>{% trans "Pick a moment in time" %}</h3>
-                    <p>{% trans "Browse maps from different years and see how the landscape changed." %}</p>
-                </article>
-                <article class="step">
-                    <span class="step-number">{% trans "03 / DISCOVER" %}</span>
-                    <h3>{% trans "Notice what’s changed" %}</h3>
-                    <p>{% trans "Compare the past and present, and uncover the stories of a place." %}</p>
-                </article>
+            <div class="map-art" aria-hidden="true">
+                <svg viewBox="0 0 430 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M56 18 372 47 341 300 24 270 56 18Z" fill="#F8F5E9" stroke="#8E997B" stroke-width="2"/>
+                    <path d="m43 84 310 37M36 143l302 42M29 207l301 41M116 24l-28 250M190 31l-29 249M269 39l-29 249M337 45l-31 249" stroke="#BCC2A7" stroke-width="1.5"/>
+                    <path d="M61 60c50 17 61-19 108-3s57 31 105 13 54-7 79 4M44 168c37-28 65-19 96-3s65 12 95-5 72-13 107 7M65 225c46-21 75-18 109-1s60 19 91 0 49-18 70-12" stroke="#C38B43" stroke-width="3"/>
+                    <path d="M151 94c19-20 40-20 59-2 17 16 19 39 2 58l-31 39-30-39c-16-19-17-40 0-56Z" fill="#245C49"/>
+                    <circle cx="181" cy="126" r="13" fill="#F8F5E9"/>
+                    <path d="M185 204h73M185 216h51M185 228h65" stroke="#8E997B" stroke-width="3" stroke-linecap="round"/>
+                </svg>
             </div>
-        </section>
- 
-        <section class="maps" id="maps">
-            <div class="maps-inner">
-                <div class="search-container" style="margin-bottom: 30px; background: var(--white); padding: 20px; border-radius: 5px; border: 1px solid var(--line);">
-                    <form method="GET" action="{% url 'home' %}" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                        <div>
-                            {{ form.query }}
-                        </div>
+        </div>
+    </section>
 
-                        <div>
-                            {{ form.year }}
-                        </div>
+    <section class="intro">
+        <p class="eyebrow">{% trans "The past is part of the place" %}</p>
+        <h2>{% trans "See your surroundings in a new light." %}</h2>
+        <p>
+            {% blocktrans %}Old maps hold clues to how neighborhoods grew, roads shifted,
+            and landmarks came to be. We’re bringing those maps into one
+            place so you can explore the history beneath your feet.{% endblocktrans %}
+        </p>
+        <div class="steps">
+            <article class="step">
+                <span class="step-number">{% trans "01 / FIND" %}</span>
+                <h3>{% trans "Start where you are" %}</h3>
+                <p>{% trans "Use your current location as the starting point for exploring the history around you." %}</p>
+            </article>
+            <article class="step">
+                <span class="step-number">{% trans "02 / TRAVEL" %}</span>
+                <h3>{% trans "Pick a moment in time" %}</h3>
+                <p>{% trans "Browse maps from different years and see how the landscape changed." %}</p>
+            </article>
+            <article class="step">
+                <span class="step-number">{% trans "03 / DISCOVER" %}</span>
+                <h3>{% trans "Notice what’s changed" %}</h3>
+                <p>{% trans "Compare the past and present, and uncover the stories of a place." %}</p>
+            </article>
+        </div>
+    </section>
 
-                        <div>
-                            {{ form.lat }}
-                        </div>
-
-                        <div>
-                            {{ form.lng }}
-                        </div>
-
-                        <button type="submit" class="button" style="padding: 10px 15px;">Search Maps</button>
-                        <a href="{% url 'home' %}" style="color: var(--green); text-decoration: none; font-size: 0.9rem;">Clear</a>
-                    </form>
-                </div>
-                <p class="eyebrow">{% trans "Start exploring" %}</p>
-                <h2>{% trans "Historical maps" %}</h2>
-                <p class="maps-subtitle">{% trans "A growing collection of places and times." %}</p>
-                {% if maps %}
-                    <div class="map-list">
-                        {% for map in maps %}
-                            <article class="map-card">
-                                <span class="map-year">{{ map.year }}</span>
-                                <h3>{{ map.title }}</h3>
-                                {% if map.source %}<p>{% trans "Source:" %} {{ map.source }}</p>{% endif %}
-                                <p>{% if map.is_georeferenced %}{% trans "Map alignment available" %}{% else %}{% trans "Map alignment in progress" %}{% endif %}</p>
-                            </article>
-                        {% endfor %}
+    <section class="maps" id="maps">
+        <div class="maps-inner">
+            <div class="search-container" style="margin-bottom: 30px; background: var(--white); padding: 20px; border-radius: 5px; border: 1px solid var(--line);">
+                <form method="GET" action="{% url 'home' %}" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                    <div>
+                        {{ form.query }}
                     </div>
-                {% else %}
-                    <div class="empty-state">
-                        <h3>{% trans "Maps are being added" %}</h3>
-                        <p>{% trans "There aren’t any historical maps to explore just yet. Check back as the collection grows." %}</p>
+
+                    <div>
+                        {{ form.year }}
                     </div>
-                {% endif %}
+
+                    <div>
+                        {{ form.lat }}
+                    </div>
+
+                    <div>
+                        {{ form.lng }}
+                    </div>
+
+                    <button type="submit" class="button" style="padding: 10px 15px;">Search Maps</button>
+                    <a href="{% url 'home' %}" style="color: var(--green); text-decoration: none; font-size: 0.9rem;">Clear</a>
+                </form>
             </div>
-        </section>
-    </main>
-    <footer class="site-footer">{% trans "Explore the stories held in the places around you." %}</footer>
-</body>
-</html>
+            <p class="eyebrow">{% trans "Start exploring" %}</p>
+            <h2>{% trans "Historical maps" %}</h2>
+            <p class="maps-subtitle">{% trans "A growing collection of places and times." %}</p>
+            {% if maps %}
+                <div class="map-list">
+                    {% for map in maps %}
+                        <article class="map-card">
+                            <span class="map-year">{{ map.year }}</span>
+                            <h3>{{ map.title }}</h3>
+                            {% if map.source %}<p>{% trans "Source:" %} {{ map.source }}</p>{% endif %}
+                            <p>{% if map.is_georeferenced %}{% trans "Map alignment available" %}{% else %}{% trans "Map alignment in progress" %}{% endif %}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>{% trans "Maps are being added" %}</h3>
+                    <p>{% trans "There aren’t any historical maps to explore just yet. Check back as the collection grows." %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

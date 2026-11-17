@@ -22,6 +22,10 @@ class RequestLoggingMiddleware:
         user = request.user.username if request.user.is_authenticated else "anonymous"
         logger.info(
             "%s %s -> %s (%.0f ms) user=%s",
-            request.method, request.path, response.status_code, elapsed_ms, user,
+            request.method,
+            request.path,
+            response.status_code,
+            elapsed_ms,
+            user,
         )
         return response

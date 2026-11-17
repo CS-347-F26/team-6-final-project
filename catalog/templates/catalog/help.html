@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Help & Tooltips | Then & There" %}{% endblock %}
+
+{% block content %}
+<section class="intro" style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+    <p class="eyebrow">{% trans "Documentation" %}</p>
+    <h2>{% trans "Help & Tooltips" %}</h2>
+    
+    <div style="background: var(--white, #fff); padding: 20px; border-radius: 5px; border: 1px solid var(--line, #ccc); margin-top: 20px;">
+        <h3>{% trans "Getting Started" %}</h3>
+        <p>{% trans "Welcome to the Then & There help center. While our interactive map functionality is under development, you can use the catalog to browse our growing collection of historical maps." %}</p>
+        
+        <h3 style="margin-top: 30px;">{% trans "How to Search" %}</h3>
+        <ul style="margin-top: 10px; line-height: 1.6;">
+            <li><strong>{% trans "Query:" %}</strong> {% trans "Search for specific places, titles, or source names." %}</li>
+            <li><strong>{% trans "Year:" %}</strong> {% trans "Filter maps by a specific year to isolate a moment in time." %}</li>
+            <li><strong>{% trans "Coordinates:" %}</strong> {% trans "Use Latitude (Lat) and Longitude (Lng) to find maps covering your exact location." %}</li>
+        </ul>
+        
+        <h3 style="margin-top: 30px;">{% trans "Map Alignment Status" %}</h3>
+        <p>{% trans "Maps listed as 'Map alignment available' have been georeferenced and will overlay accurately on modern coordinates. Maps with 'alignment in progress' are still being processed and may only be viewed as static images." %}</p>
+    </div>
+</section>
+{% endblock content %}
