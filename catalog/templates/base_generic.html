@@ -17,12 +17,13 @@
     <header class="site-header">
         <a class="brand" href="{% url 'home' %}">Then <span>&amp;</span> There</a>
         <nav aria-label="{% trans 'Main navigation' %}">
+            <a class="header-link" href="{% url 'home' %}">{% trans "Home" %}</a>
             <a class="header-link" href="{% url 'help' %}">{% trans "Help" %}</a>
             <a class="header-link" href="{% url 'settings' %}">{% trans "Settings" %}</a>
         </nav>
     </header>
  
-    <!-- Placeholder for page-specific main wrapper classes -->
+    <!-- The main tag needs to exist outside of any other wrappers so flex-grow can work -->
     <main class="{% block main_class %}{% endblock %}">
         {% block content %}{% endblock %}
     </main>

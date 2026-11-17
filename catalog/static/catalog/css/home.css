@@ -137,14 +137,6 @@
 .empty-state { max-width: 680px; }
 .empty-state p { margin-bottom: 0; }
 
-.site-footer {
-    color: var(--muted);
-    font-family: Arial, sans-serif;
-    font-size: .82rem;
-    padding: 22px 28px;
-    text-align: center;
-}
-
 /* Responsive */
 @media (max-width: 860px) {
     .hero-inner {
