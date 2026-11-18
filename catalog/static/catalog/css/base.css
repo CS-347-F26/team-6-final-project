@@ -10,7 +10,7 @@
     --gold: #c38b43;
 }
 
-- { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -24,6 +24,7 @@ body {
 
 main {
     flex-grow: 1;
+    width: 100%;
 }
 
 a { color: inherit; }
@@ -43,6 +44,7 @@ select:focus-visible {
     margin: 0 auto;
     max-width: 1160px;
     padding: 22px 28px;
+    width: 100%;
 }
 
 .brand {
@@ -69,10 +71,14 @@ select:focus-visible {
 
 /* Footer */
 .site-footer {
-    text-align: center;
-    padding: 3rem 1rem 2rem 1rem;
+    border-top: 1px solid var(--line);
     color: var(--muted);
+    font-family: Arial, sans-serif;
     font-size: 0.9rem;
+    margin-top: auto;
+    padding: 1.75rem 1rem;
+    text-align: center;
+    width: 100%;
 }
 
 /* Shared components */
