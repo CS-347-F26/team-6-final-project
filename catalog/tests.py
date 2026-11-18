@@ -8,7 +8,13 @@ class RequestLoggingMiddlewareTests(TestCase):
     def test_request_is_logged(self):
         with self.assertLogs("catalog", level="INFO") as logs:
             self.client.get("/")
-        self.assertIn("GET / -> 200", logs.output[0])
+        # Columns: method, status, time, path
+        self.assertRegex(logs.output[0], r"GET\s+200\s+\d+ms\s+/\s")
+
+    # Static file requests should not be logged at all
+    def test_static_request_is_skipped(self):
+        with self.assertNoLogs("catalog", level="INFO"):
+            self.client.get("/static/missing.css")
 
 
 class HomePageTests(TestCase):

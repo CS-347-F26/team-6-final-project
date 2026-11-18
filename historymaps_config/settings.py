@@ -67,11 +67,23 @@ MIDDLEWARE = [
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    # Prefix each line with a short HH:MM:SS timestamp
+    "formatters": {
+        "short": {"format": "%(asctime)s  %(message)s", "datefmt": "%H:%M:%S"},
+    },
     "handlers": {
-        "console": {"class": "logging.StreamHandler"},
+        "console": {"class": "logging.StreamHandler", "formatter": "short"},
     },
     "loggers": {
         "catalog": {"handlers": ["console"], "level": "INFO"},
+        # runserver's request lines and "Not Found" notices duplicate ours;
+        # only let 5xx errors (with tracebacks) through
+        "django.server": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.request": {"level": "ERROR"},
     },
 }
 
