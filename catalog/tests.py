@@ -129,3 +129,13 @@ class HomePageTests(TestCase):
 
         self.assertContains(response, "Downtown Harrisonburg")
         self.assertContains(response, "1885")
+
+
+# Checks migration 0004 corrected the seeded maps (the test DB runs every migration)
+class SeedMapTests(TestCase):
+    def test_seed_maps_are_corrected(self):
+        harrisonburg = HistoricalMap.objects.get(title="Harrisonburg Map")
+        self.assertEqual(harrisonburg.year, 1877)
+        self.assertFalse(harrisonburg.is_georeferenced)
+        quad = HistoricalMap.objects.get(title="Quadrangle for Harrisonburg, VA")
+        self.assertFalse(quad.is_georeferenced)
