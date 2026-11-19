@@ -1,4 +1,8 @@
+import json
+
+from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase
+from django.urls import reverse
 
 from .georef import apply_georeference, fit_affine
 from .models import ControlPoint, HistoricalMap
@@ -139,3 +143,60 @@ class SeedMapTests(TestCase):
         self.assertFalse(harrisonburg.is_georeferenced)
         quad = HistoricalMap.objects.get(title="Quadrangle for Harrisonburg, VA")
         self.assertFalse(quad.is_georeferenced)
+
+
+# Checks the staff-only georeferencing tool: who can open it, saving, and bad input
+class GeoreferenceToolTests(TestCase):
+    def setUp(self):
+        # The seeded Harrisonburg scan (452 x 768 pixels) from migration 0002
+        self.hmap = HistoricalMap.objects.get(title="Harrisonburg Map")
+        self.url = reverse("georeference", args=[self.hmap.pk])
+        User = get_user_model()
+        self.staff = User.objects.create_user("staff", password="pw", is_staff=True)
+        self.regular = User.objects.create_user("regular", password="pw")
+
+    # Posts points as JSON the same way the page script does
+    def post_points(self, points):
+        return self.client.post(
+            self.url, json.dumps({"points": points}), content_type="application/json"
+        )
+
+    def test_anonymous_and_regular_users_are_redirected(self):
+        self.assertEqual(self.client.get(self.url).status_code, 302)
+        self.client.force_login(self.regular)
+        self.assertEqual(self.client.get(self.url).status_code, 302)
+
+    def test_staff_sees_the_tool(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(self.url)
+        self.assertContains(response, 'id="scan-map"')
+        self.assertContains(response, self.hmap.image.url)
+
+    def test_staff_can_save_points(self):
+        self.client.force_login(self.staff)
+        points = [
+            {"x": x, "y": y, "lat": lat, "lng": lng}
+            for x, y in [(10, 20), (400, 50), (60, 700)]
+            for lat, lng in [_true_latlng(x, y)]
+        ]
+        response = self.post_points(points)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("topleft", response.json()["corners"])
+        self.hmap.refresh_from_db()
+        self.assertTrue(self.hmap.is_georeferenced)
+        self.assertEqual(self.hmap.control_points.count(), 3)
+
+    def test_bad_points_are_rejected_and_old_points_kept(self):
+        ControlPoint.objects.create(map=self.hmap, x=1, y=1, lat=38.4, lng=-78.8)
+        self.client.force_login(self.staff)
+
+        # Points in a straight line can't be fitted
+        line = [{"x": i, "y": i, "lat": 38.4 + i, "lng": -78.8} for i in (0, 10, 20)]
+        self.assertEqual(self.post_points(line).status_code, 400)
+        # A latitude of 200 is impossible
+        bad = [{"x": 1, "y": 1, "lat": 200, "lng": -78.8}] * 3
+        self.assertEqual(self.post_points(bad).status_code, 400)
+
+        # The original point survived both failed saves
+        self.assertEqual(self.hmap.control_points.count(), 1)

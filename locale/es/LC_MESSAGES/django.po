@@ -118,3 +118,78 @@ msgstr "Más preferencias próximamente"
 
 msgid "Options for location and map preferences are not available yet. For now, you can head back and explore the historical map collection."
 msgstr "Las opciones de ubicación y preferencias de mapas aún no están disponibles. Por ahora, puedes volver y explorar la colección de mapas históricos."
+
+msgid "Staff tool"
+msgstr "Herramienta del personal"
+
+msgid "Georeference %(title)s"
+msgstr "Georreferenciar %(title)s"
+
+msgid "Georeference %(title)s (%(year)s)"
+msgstr "Georreferenciar %(title)s (%(year)s)"
+
+msgid "Click a spot on the scanned map (left), such as a street corner."
+msgstr "Haz clic en un punto del mapa escaneado (izquierda), como una esquina."
+
+msgid "Click the same spot on today's map (right). The pair gets a number."
+msgstr "Haz clic en el mismo punto del mapa actual (derecha). La pareja recibe un número."
+
+msgid "Add at least 3 pairs spread across the map (4–6 is better), then press Fit & save."
+msgstr "Añade al menos 3 parejas repartidas por el mapa (mejor 4–6) y pulsa Ajustar y guardar."
+
+msgid "Scanned map"
+msgstr "Mapa escaneado"
+
+msgid "Today's map"
+msgstr "Mapa actual"
+
+msgid "Scanned historical map"
+msgstr "Mapa histórico escaneado"
+
+msgid "Present-day map"
+msgstr "Mapa del presente"
+
+msgid "Fit & save"
+msgstr "Ajustar y guardar"
+
+msgid "Preview opacity"
+msgstr "Opacidad de la vista previa"
+
+msgid "Control points"
+msgstr "Puntos de control"
+
+msgid "Image x, y (px)"
+msgstr "Imagen x, y (px)"
+
+msgid "Latitude, longitude"
+msgstr "Latitud, longitud"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Georeference"
+msgstr "Georreferenciar"
+
+msgid "Click a spot on the scanned map."
+msgstr "Haz clic en un punto del mapa escaneado."
+
+msgid "Now click the same spot on today's map."
+msgstr "Ahora haz clic en el mismo punto del mapa actual."
+
+msgid "Add at least 3 pairs to fit the map."
+msgstr "Añade al menos 3 parejas para ajustar el mapa."
+
+msgid "Ready to fit. Press Fit & save."
+msgstr "Listo para ajustar. Pulsa Ajustar y guardar."
+
+msgid "Fitting…"
+msgstr "Ajustando…"
+
+msgid "Saved. Average error: ± %s m"
+msgstr "Guardado. Error medio: ± %s m"
+
+msgid "Could not save:"
+msgstr "No se pudo guardar:"
+
+msgid "Remove pair"
+msgstr "Quitar pareja"
