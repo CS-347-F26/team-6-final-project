@@ -15,8 +15,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("home/", views.home, name="home"),  # Ensure home is mapped
+    # path("", views.index, name="index"),
+    path("", views.home, name="home"),  # Ensure home is mapped
     path("settings/", views.settings, name="settings"),  # Ensure settings is mapped
     path("help/", views.help_page, name="help"),
+<<<<<<< main
+=======
+    # Staff-only tool for aligning a scanned map to the real world
+    path("maps/<int:pk>/georeference/", views.georeference, name="georeference"),
+    path("map/", views.map_view, name="map"),
+>>>>>>> local
 ]

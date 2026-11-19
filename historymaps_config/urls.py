@@ -23,9 +23,18 @@ from catalog import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
+<<<<<<< main
     path("catalog/", include("catalog.urls")),
     path("", views.home, name="home"),
     path("settings/", views.settings, name="settings"),
+=======
+    path("", include("catalog.urls")),
+    # path("catalog/", include("catalog.urls")),
+    # path("", views.home, name="home"),
+    # path("settings/", views.settings, name="settings"),
+    # Public viewer: historical maps over today's map
+    # path("map/", views.map_view, name="map"),
+>>>>>>> local
 ]
 
 from django.conf import settings
