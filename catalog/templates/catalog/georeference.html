@@ -1,0 +1,72 @@
+{% extends "base_generic.html" %}
+{% load i18n static %}
+
+{% block title %}{% blocktrans with title=map.title %}Georeference {{ title }}{% endblocktrans %} | Then &amp; There{% endblock %}
+
+{% block extra_css %}
+    <!-- Leaflet map library (pinned version + integrity hash) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="">
+    <link rel="stylesheet" href="{% static 'catalog/css/map.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="georef">
+    <!-- Heading and how-to -->
+    <p class="eyebrow">{% trans "Staff tool" %}</p>
+    <h1>{% blocktrans with title=map.title year=map.year %}Georeference {{ title }} ({{ year }}){% endblocktrans %}</h1>
+    <ol class="georef-steps">
+        <li>{% trans "Click a spot on the scanned map (left), such as a street corner." %}</li>
+        <li>{% trans "Click the same spot on today's map (right). The pair gets a number." %}</li>
+        <li>{% trans "Add at least 3 pairs spread across the map (4–6 is better), then press Fit & save." %}</li>
+    </ol>
+
+    <!-- The two maps side by side (stacked on small screens) -->
+    <div class="georef-panes">
+        <div>
+            <h2 class="pane-title">{% trans "Scanned map" %}</h2>
+            <div id="scan-map" class="map-pane" role="application" aria-label="{% trans 'Scanned historical map' %}"></div>
+        </div>
+        <div>
+            <h2 class="pane-title">{% trans "Today's map" %}</h2>
+            <div id="world-map" class="map-pane" role="application" aria-label="{% trans 'Present-day map' %}"></div>
+        </div>
+    </div>
+
+    <!-- Status line; screen readers announce changes -->
+    <p id="georef-status" class="georef-status" aria-live="polite"></p>
+
+    <!-- Controls: save, and preview opacity once a fit exists -->
+    <div class="georef-controls">
+        <button type="button" id="save-points" class="button" disabled>{% trans "Fit & save" %}</button>
+        <label for="preview-opacity">{% trans "Preview opacity" %}</label>
+        <input type="range" id="preview-opacity" min="0" max="1" step="0.05" value="0.6">
+    </div>
+
+    <!-- The list of pairs, with remove buttons -->
+    <table class="georef-table">
+        <caption>{% trans "Control points" %}</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans "Image x, y (px)" %}</th>
+                <th scope="col">{% trans "Latitude, longitude" %}</th>
+                <th scope="col"><span class="visually-hidden">{% trans "Actions" %}</span></th>
+            </tr>
+        </thead>
+        <tbody id="points-body"></tbody>
+    </table>
+</section>
+
+<!-- Data for the page script: the map, its saved points, translated messages, save URL -->
+{{ tool_data|json_script:"tool-data" }}
+{% csrf_token %}
+
+<!-- Leaflet, the rotated-image plugin, the shared base map, then this page's script -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"
+        integrity="sha384-7oBmAX73N5DMKPSTLhXDB3qYFCIcDn1NtkLTsqtvLbzJjwYn/GF+0TnSMG6o4Bg9" crossorigin=""></script>
+<script src="{% static 'catalog/js/basemap.js' %}"></script>
+<script src="{% static 'catalog/js/georeference.js' %}"></script>
+{% endblock %}

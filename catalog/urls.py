@@ -19,4 +19,6 @@ urlpatterns = [
     path("home/", views.home, name="home"),  # Ensure home is mapped
     path("settings/", views.settings, name="settings"),  # Ensure settings is mapped
     path("help/", views.help_page, name="help"),
+    # Staff-only tool for aligning a scanned map to the real world
+    path("maps/<int:pk>/georeference/", views.georeference, name="georeference"),
 ]

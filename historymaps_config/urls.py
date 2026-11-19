@@ -26,12 +26,16 @@ urlpatterns = [
     path("catalog/", include("catalog.urls")),
     path("", views.home, name="home"),
     path("settings/", views.settings, name="settings"),
+    # Public viewer: historical maps over today's map
+    path("map/", views.map_view, name="map"),
 ]
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Serve uploaded map images in development (static() does nothing when DEBUG is off)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     path("accounts/", include("allauth.urls")),

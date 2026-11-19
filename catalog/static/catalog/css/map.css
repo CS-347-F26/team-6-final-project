@@ -1,0 +1,189 @@
+/* Styles for the map pages (georeferencing tool now, map viewer later).
+   Colors come from the variables in base.css. */
+
+/* === GEOREFERENCE TOOL LAYOUT === */
+.georef {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 32px 24px 48px;
+}
+
+.georef h1 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: 0 0 12px;
+}
+
+.georef-steps {
+    color: var(--muted);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    padding-left: 20px;
+}
+
+/* Two maps side by side; stacked on narrow screens */
+.georef-panes {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 800px) {
+    .georef-panes { grid-template-columns: 1fr; }
+}
+
+.pane-title {
+    font-family: Arial, sans-serif;
+    font-size: .85rem;
+    letter-spacing: .08em;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+}
+
+/* Every Leaflet map box on these pages */
+.map-pane {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    height: 60vh;
+    min-height: 320px;
+}
+
+/* Scan pane: paper-colored background behind the image, crosshair for picking */
+#scan-map { background: var(--paper); }
+#scan-map, #world-map { cursor: crosshair; }
+
+/* Status line under the maps */
+.georef-status {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    margin: 16px 0;
+    min-height: 1.4em;
+}
+
+/* Save button + opacity slider row */
+.georef-controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.button:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* === CONTROL POINT TABLE === */
+.georef-table {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.georef-table caption {
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.georef-table th,
+.georef-table td {
+    border-bottom: 1px solid var(--line);
+    padding: 8px;
+    text-align: left;
+}
+
+/* Text-style button used for "Remove pair" */
+.link-button {
+    background: none;
+    border: 0;
+    color: var(--green);
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+}
+
+/* === NUMBERED PINS === */
+/* Gold circle = finished pair; hollow = scan click waiting for its match */
+.gcp-marker {
+    align-items: center;
+    background: var(--gold);
+    border: 2px solid var(--white);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+    color: var(--ink);
+    display: flex;
+    font: 700 12px Arial, sans-serif;
+    justify-content: center;
+}
+
+.gcp-marker.gcp-pending {
+    background: var(--white);
+    border-color: var(--gold);
+}
+
+/* === HELPERS === */
+/* Hidden visually but still read by screen readers */
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/* === MAP VIEWER (/map/) === */
+.map-viewer {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 24px 24px 40px;
+}
+
+.map-viewer h1 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: 0 0 16px;
+}
+
+/* Picker, slider, and location button on one wrapping row */
+.viewer-controls {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    gap: 16px 24px;
+}
+
+.viewer-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.viewer-control label { font-size: .85rem; font-weight: 700; }
+
+.viewer-control select {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font: inherit;
+    padding: 10px;
+}
+
+/* Taller map than the tool's panes; it's the whole point of the page */
+.viewer-map { height: 70vh; }
+
+/* Shown when no map is aligned yet */
+.map-viewer .empty-state {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    padding: 24px;
+}
