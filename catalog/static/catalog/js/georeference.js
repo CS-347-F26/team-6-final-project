@@ -26,6 +26,10 @@
     const worldMap = L.map("world-map").setView([38.4496, -78.8689], 15);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
+        // OSM blocks tile requests with no Referer, and Django's default
+        // Referrer-Policy (same-origin) strips it. This sends just our site's
+        // origin (e.g. http://127.0.0.1:8000/), never the page path.
+        referrerPolicy: "strict-origin-when-cross-origin",
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(worldMap);
 
