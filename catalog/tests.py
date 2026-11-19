@@ -56,6 +56,33 @@ class HomePageTests(TestCase):
 
         self.assertContains(response, "Maps are being added")
 
+    def test_map_search_fields_have_visible_labels(self):
+        response = self.client.get("/")
+
+        self.assertContains(
+            response,
+            '<form class="search-form" method="GET" action="/" aria-label="Search historical maps">',
+        )
+        for field_id, label in (
+            ("id_query", "Search by place:"),
+            ("id_year", "Year:"),
+            ("id_lat", "Latitude:"),
+            ("id_lng", "Longitude:"),
+        ):
+            self.assertContains(response, f'<label for="{field_id}">{label}</label>')
+            self.assertContains(response, f'id="{field_id}"')
+
+    def test_map_search_field_labels_are_translated(self):
+        self.client.post("/i18n/setlang/", {"language": "es", "next": "/"})
+        response = self.client.get("/")
+
+        self.assertContains(
+            response, '<label for="id_query">Buscar por lugar:</label>'
+        )
+        self.assertContains(response, '<label for="id_year">Año:</label>')
+        self.assertContains(response, '<label for="id_lat">Latitud:</label>')
+        self.assertContains(response, '<label for="id_lng">Longitud:</label>')
+
     def test_homepage_lists_historical_maps(self):
         HistoricalMap.objects.create(
             title="Downtown Harrisonburg",
