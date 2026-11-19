@@ -193,3 +193,6 @@ msgstr "No se pudo guardar:"
 
 msgid "Remove pair"
 msgstr "Quitar pareja"
+
+msgid "Saved. Add a 4th pair to measure how accurate the fit is."
+msgstr "Guardado. Añade una 4.ª pareja para medir la precisión del ajuste."

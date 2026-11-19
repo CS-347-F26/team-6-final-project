@@ -105,7 +105,9 @@ def apply_georeference(hmap):
     hmap.east = max(c[1] for c in all_corners)
     hmap.west = min(c[1] for c in all_corners)
 
-    hmap.rms_error = rms_error_meters(points, to_latlng)
+    # 3 points always fit exactly (error 0 no matter how sloppy the clicks), so
+    # accuracy can only be measured from the 4th point on; None means "unknown"
+    hmap.rms_error = rms_error_meters(points, to_latlng) if len(points) > 3 else None
     hmap.is_georeferenced = True
     hmap.save()
     return hmap

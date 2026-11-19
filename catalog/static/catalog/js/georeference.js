@@ -22,16 +22,9 @@
     scanMap.fitBounds(scanBounds);
 
     // === RIGHT: TODAY'S MAP ===
-    // OpenStreetMap tiles (free, no key); starts at Harrisonburg's Court Square
+    // Present-day base map (see basemap.js); starts at Harrisonburg's Court Square
     const worldMap = L.map("world-map").setView([38.4496, -78.8689], 15);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        // OSM blocks tile requests with no Referer, and Django's default
-        // Referrer-Policy (same-origin) strips it. This sends just our site's
-        // origin (e.g. http://127.0.0.1:8000/), never the page path.
-        referrerPolicy: "strict-origin-when-cross-origin",
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(worldMap);
+    window.addBasemap(worldMap);
 
     // === STATE ===
     // pairs: finished matches {x, y, lat, lng}; pending: a scan click waiting for its match
@@ -150,7 +143,12 @@
             const result = await response.json();
             if (!response.ok) throw new Error(result.error);
             showPreview(result.corners);
-            setStatus(msg.saved.replace("%s", result.rms_error.toFixed(1)));
+            // No error value with exactly 3 pairs (they always fit perfectly)
+            setStatus(
+                result.rms_error === null
+                    ? msg.savedNoError
+                    : msg.saved.replace("%s", result.rms_error.toFixed(1))
+            );
         } catch (error) {
             setStatus(msg.failed + " " + error.message);
         } finally {

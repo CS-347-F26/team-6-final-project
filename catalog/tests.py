@@ -38,31 +38,35 @@ class FitAffineTests(SimpleTestCase):
 
 # Checks apply_georeference stores corners, bounds, and error on the map
 class ApplyGeoreferenceTests(TestCase):
-    def test_stores_corners_bounds_and_error(self):
-        # Reuses the real Harrisonburg scan (452 x 768 pixels) from media/
-        hmap = HistoricalMap.objects.create(
-            title="Test map",
-            year=1878,
-            image="historical_maps/HarrisonburgMap.jpg",
-            north=0,
-            south=0,
-            east=0,
-            west=0,
-        )
-        for x, y in [(10, 20), (400, 50), (60, 700)]:
+    # Uses the seeded Harrisonburg map (its real 452 x 768 scan from media/)
+    def setUp(self):
+        self.hmap = HistoricalMap.objects.get(title="Harrisonburg Map")
+
+    # Adds perfect control points generated from the known transform
+    def add_points(self, pixels):
+        for x, y in pixels:
             lat, lng = _true_latlng(x, y)
-            ControlPoint.objects.create(map=hmap, x=x, y=y, lat=lat, lng=lng)
+            ControlPoint.objects.create(map=self.hmap, x=x, y=y, lat=lat, lng=lng)
 
-        apply_georeference(hmap)
-        hmap.refresh_from_db()
+    def test_stores_corners_bounds_and_error(self):
+        self.add_points([(10, 20), (400, 50), (60, 700), (300, 500)])
+        apply_georeference(self.hmap)
+        self.hmap.refresh_from_db()
 
-        self.assertTrue(hmap.is_georeferenced)
-        for got, want in zip(hmap.corners["topleft"], _true_latlng(0, 0)):
+        self.assertTrue(self.hmap.is_georeferenced)
+        for got, want in zip(self.hmap.corners["topleft"], _true_latlng(0, 0)):
             self.assertAlmostEqual(got, want, places=9)
         # Bounding box covers the rotated image; error is ~0 for perfect points
-        self.assertGreater(hmap.north, hmap.south)
-        self.assertGreater(hmap.east, hmap.west)
-        self.assertLess(hmap.rms_error, 0.01)
+        self.assertGreater(self.hmap.north, self.hmap.south)
+        self.assertGreater(self.hmap.east, self.hmap.west)
+        self.assertLess(self.hmap.rms_error, 0.01)
+
+    # 3 points always fit exactly, so no error is reported (None = unknown)
+    def test_three_points_have_no_error_value(self):
+        self.add_points([(10, 20), (400, 50), (60, 700)])
+        apply_georeference(self.hmap)
+        self.hmap.refresh_from_db()
+        self.assertIsNone(self.hmap.rms_error)
 
 
 # Checks the custom middleware logs each request with method, path, and status
@@ -98,6 +102,8 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'action="/i18n/setlang/"')
 
     def test_selecting_spanish_translates_settings_and_homepage(self):
+        # The homepage only shows the empty-state text when there are no maps
+        HistoricalMap.objects.all().delete()
         response = self.client.post(
             "/i18n/setlang/",
             {"language": "es", "next": "/settings/"},
@@ -114,6 +120,8 @@ class HomePageTests(TestCase):
         self.assertContains(homepage, "Estamos agregando mapas")
 
     def test_homepage_shows_empty_state_without_maps(self):
+        # Migration 0002 seeds two maps; remove them to see the empty state
+        HistoricalMap.objects.all().delete()
         response = self.client.get("/")
 
         self.assertContains(response, "Maps are being added")

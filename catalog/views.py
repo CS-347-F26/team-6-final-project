@@ -120,6 +120,9 @@ def georeference(request, pk):
             "ready": _("Ready to fit. Press Fit & save."),
             "saving": _("Fitting…"),
             "saved": _("Saved. Average error: ± %s m"),
+            "savedNoError": _(
+                "Saved. Add a 4th pair to measure how accurate the fit is."
+            ),
             "failed": _("Could not save:"),
             "remove": _("Remove pair"),
         },

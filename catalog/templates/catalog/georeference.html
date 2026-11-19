@@ -62,10 +62,11 @@
 {{ tool_data|json_script:"tool-data" }}
 {% csrf_token %}
 
-<!-- Leaflet, the rotated-image plugin, then this page's script -->
+<!-- Leaflet, the rotated-image plugin, the shared base map, then this page's script -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"
         integrity="sha384-7oBmAX73N5DMKPSTLhXDB3qYFCIcDn1NtkLTsqtvLbzJjwYn/GF+0TnSMG6o4Bg9" crossorigin=""></script>
+<script src="{% static 'catalog/js/basemap.js' %}"></script>
 <script src="{% static 'catalog/js/georeference.js' %}"></script>
 {% endblock %}
