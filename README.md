@@ -37,7 +37,7 @@ Intermediates:
 5. ~~I90 - mobile responsiveness~~
 6. ~~I170 - language translation~~
 7. I10 (maybe) - handles file uploads
-8. I89 - accessbility
+8. I89 - accessibility ([manual assessment report](./docs/accessibility-testing.md))
 9. I150 - bulk operations (perform actions on multiple records at once)
 10. I100
 11. ~~I20 - app has search functionality~~

@@ -104,6 +104,57 @@
 .maps-inner { margin: 0 auto; max-width: 1104px; }
 .maps-subtitle { color: var(--muted); font-family: Arial, sans-serif; margin: 0 0 24px; }
 
+.search-container {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.search-form {
+    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.search-field {
+    display: grid;
+    flex: 1 1 160px;
+    font-family: Arial, sans-serif;
+    gap: 6px;
+}
+
+.search-field label {
+    color: var(--ink);
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.search-field input {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink);
+    font: inherit;
+    min-height: 44px;
+    min-width: 0;
+    padding: 10px;
+    width: 100%;
+}
+
+.search-field input:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+}
+
+.clear-search {
+    color: var(--green-dark);
+    font-family: Arial, sans-serif;
+    padding: 12px 8px;
+    text-underline-offset: 4px;
+}
+
 .map-list {
     display: grid;
     gap: 16px;
@@ -162,4 +213,6 @@
 
 @media (max-width: 480px) {
     .hero-inner, .intro, .maps { padding-left: 20px; padding-right: 20px; }
+    .search-container { padding: 16px; }
+    .search-form > .button { width: 100%; }
 }

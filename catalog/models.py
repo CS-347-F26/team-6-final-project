@@ -1,8 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.conf import settings
-from datetime import date
+from django.db import models
 
 
 # === USER ===
@@ -38,6 +36,15 @@ class HistoricalMap(models.Model):
     # False means the image is stored but not aligned to the real world yet
     is_georeferenced = models.BooleanField(default=False)
 
+    # Filled in by catalog.georef.apply_georeference(): where the image's
+    # top-left, top-right, and bottom-left corners land, as [lat, lng] pairs.
+    # The front end uses these three corners to draw the (possibly rotated) overlay.
+    corners = models.JSONField(null=True, blank=True)
+
+    # Average distance (meters) between where the control points were clicked
+    # and where the fitted alignment puts them. Lower is better.
+    rms_error = models.FloatField(null=True, blank=True)
+
     # Set automatically when the map is first added
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -61,3 +68,30 @@ class HistoricalMap(models.Model):
     # How the map shows up in the admin list, like "Downtown Harrisonburg (1885)"
     def __str__(self):
         return f"{self.title} ({self.year})"
+
+
+# === CONTROL POINT ===
+# One matching pair used to georeference a map: a pixel on the scanned image
+# (x, y, measured from the image's top-left corner) and the real-world spot it
+# shows (lat, lng). Three or more of these are enough to align a map.
+class ControlPoint(models.Model):
+    # The map this point belongs to; deleting the map deletes its points
+    map = models.ForeignKey(
+        HistoricalMap, on_delete=models.CASCADE, related_name="control_points"
+    )
+
+    # Position on the scanned image, in pixels
+    x = models.FloatField()
+    y = models.FloatField()
+
+    # Matching position on the real-world map
+    lat = models.FloatField()
+    lng = models.FloatField()
+
+    class Meta:
+        # Keep points in the order they were added
+        ordering = ["id"]
+
+    # Shows up in the admin like "Harrisonburg Map (1878): (120, 340) -> 38.45000, -78.87000"
+    def __str__(self):
+        return f"{self.map}: ({self.x:.0f}, {self.y:.0f}) -> {self.lat:.5f}, {self.lng:.5f}"
