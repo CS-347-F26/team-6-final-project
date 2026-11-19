@@ -196,3 +196,39 @@ msgstr "Quitar pareja"
 
 msgid "Saved. Add a 4th pair to measure how accurate the fit is."
 msgstr "Guardado. Añade una 4.ª pareja para medir la precisión del ajuste."
+
+msgid "Map"
+msgstr "Mapa"
+
+msgid "Then and now"
+msgstr "Antes y ahora"
+
+msgid "Historical map"
+msgstr "Mapa histórico"
+
+msgid "Historical map opacity"
+msgstr "Opacidad del mapa histórico"
+
+msgid "Show my location"
+msgstr "Mostrar mi ubicación"
+
+msgid "Historical map shown over a present-day map"
+msgstr "Mapa histórico sobre un mapa actual"
+
+msgid "No maps are aligned yet"
+msgstr "Todavía no hay mapas alineados"
+
+msgid "Historical maps appear here once they've been matched to today's map."
+msgstr "Los mapas históricos aparecen aquí cuando se han ajustado al mapa actual."
+
+msgid "View on map"
+msgstr "Ver en el mapa"
+
+msgid "Finding your location…"
+msgstr "Buscando tu ubicación…"
+
+msgid "You are here (within about %s m)."
+msgstr "Estás aquí (con un margen de unos %s m)."
+
+msgid "Couldn't get your location:"
+msgstr "No se pudo obtener tu ubicación:"

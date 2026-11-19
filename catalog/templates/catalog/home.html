@@ -97,6 +97,7 @@
                             <h3>{{ map.title }}</h3>
                             {% if map.source %}<p>{% trans "Source:" %} {{ map.source }}</p>{% endif %}
                             <p>{% if map.is_georeferenced %}{% trans "Map alignment available" %}{% else %}{% trans "Map alignment in progress" %}{% endif %}</p>
+                            {% if map.is_georeferenced and map.corners %}<p><a href="{% url 'map' %}?map={{ map.pk }}">{% trans "View on map" %}</a></p>{% endif %}
                             {% if user.is_staff %}<p><a href="{% url 'georeference' map.pk %}">{% trans "Georeference" %}</a></p>{% endif %}
                         </article>
                     {% endfor %}

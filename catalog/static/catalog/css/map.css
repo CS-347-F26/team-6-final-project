@@ -138,3 +138,52 @@
     white-space: nowrap;
     width: 1px;
 }
+
+/* === MAP VIEWER (/map/) === */
+.map-viewer {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 24px 24px 40px;
+}
+
+.map-viewer h1 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: 0 0 16px;
+}
+
+/* Picker, slider, and location button on one wrapping row */
+.viewer-controls {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    gap: 16px 24px;
+}
+
+.viewer-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.viewer-control label { font-size: .85rem; font-weight: 700; }
+
+.viewer-control select {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font: inherit;
+    padding: 10px;
+}
+
+/* Taller map than the tool's panes; it's the whole point of the page */
+.viewer-map { height: 70vh; }
+
+/* Shown when no map is aligned yet */
+.map-viewer .empty-state {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    padding: 24px;
+}

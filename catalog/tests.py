@@ -13,6 +13,20 @@ def _true_latlng(x, y):
     return (38.46 + 2e-6 * x - 1.1e-5 * y, -78.88 + 1.3e-5 * x + 3e-6 * y)
 
 
+# A new, unaligned map that reuses the real Harrisonburg scan (452 x 768 px).
+# Tests use this because migration 0005 already aligns the seeded Harrisonburg map.
+def _blank_map(title="Test map"):
+    return HistoricalMap.objects.create(
+        title=title,
+        year=1877,
+        image="historical_maps/HarrisonburgMap_6dzXitZ.jpg",
+        north=0,
+        south=0,
+        east=0,
+        west=0,
+    )
+
+
 # Checks the affine fit recovers a known transform and rejects bad input
 class FitAffineTests(SimpleTestCase):
     def test_recovers_known_transform(self):
@@ -38,9 +52,8 @@ class FitAffineTests(SimpleTestCase):
 
 # Checks apply_georeference stores corners, bounds, and error on the map
 class ApplyGeoreferenceTests(TestCase):
-    # Uses the seeded Harrisonburg map (its real 452 x 768 scan from media/)
     def setUp(self):
-        self.hmap = HistoricalMap.objects.get(title="Harrisonburg Map")
+        self.hmap = _blank_map()
 
     # Adds perfect control points generated from the known transform
     def add_points(self, pixels):
@@ -143,21 +156,40 @@ class HomePageTests(TestCase):
         self.assertContains(response, "1885")
 
 
-# Checks migration 0004 corrected the seeded maps (the test DB runs every migration)
+# Checks the seed migrations (the test DB runs every migration):
+# 0004 corrected the year, 0005 aligned Harrisonburg; the 1892 quad isn't aligned yet
 class SeedMapTests(TestCase):
+    def setUp(self):
+        self.harrisonburg = HistoricalMap.objects.get(title="Harrisonburg Map")
+
     def test_seed_maps_are_corrected(self):
-        harrisonburg = HistoricalMap.objects.get(title="Harrisonburg Map")
-        self.assertEqual(harrisonburg.year, 1877)
-        self.assertFalse(harrisonburg.is_georeferenced)
+        self.assertEqual(self.harrisonburg.year, 1877)
         quad = HistoricalMap.objects.get(title="Quadrangle for Harrisonburg, VA")
         self.assertFalse(quad.is_georeferenced)
+
+    def test_harrisonburg_is_aligned_out_of_the_box(self):
+        self.assertTrue(self.harrisonburg.is_georeferenced)
+        self.assertEqual(self.harrisonburg.control_points.count(), 3)
+        # It shows up on /map/ with no clicking needed
+        self.assertContains(self.client.get("/map/"), "Harrisonburg Map")
+
+    # The corners stored in 0005 must match a fresh fit of its points (within ~1 m)
+    def test_seeded_corners_match_seeded_points(self):
+        points = list(
+            self.harrisonburg.control_points.values_list("x", "y", "lat", "lng")
+        )
+        to_latlng = fit_affine(points)
+        width, height = self.harrisonburg.image.width, self.harrisonburg.image.height
+        pixels = {"topleft": (0, 0), "topright": (width, 0), "bottomleft": (0, height)}
+        for name, (x, y) in pixels.items():
+            for got, want in zip(self.harrisonburg.corners[name], to_latlng(x, y)):
+                self.assertAlmostEqual(got, want, delta=1e-5)
 
 
 # Checks the staff-only georeferencing tool: who can open it, saving, and bad input
 class GeoreferenceToolTests(TestCase):
     def setUp(self):
-        # The seeded Harrisonburg scan (452 x 768 pixels) from migration 0002
-        self.hmap = HistoricalMap.objects.get(title="Harrisonburg Map")
+        self.hmap = _blank_map()
         self.url = reverse("georeference", args=[self.hmap.pk])
         User = get_user_model()
         self.staff = User.objects.create_user("staff", password="pw", is_staff=True)
@@ -208,3 +240,49 @@ class GeoreferenceToolTests(TestCase):
 
         # The original point survived both failed saves
         self.assertEqual(self.hmap.control_points.count(), 1)
+
+
+# Checks the public /map/ viewer, its nav link, and the homepage "View on map" links
+class MapViewerTests(TestCase):
+    # Swap the already-aligned seeded Harrisonburg map for a blank one; the
+    # unaligned 1892 quad stays, so tests can check it is left out
+    def setUp(self):
+        HistoricalMap.objects.filter(title="Harrisonburg Map").delete()
+        self.hmap = _blank_map()
+
+    # Aligns the test map with perfect synthetic points
+    def align_harrisonburg(self):
+        for x, y in [(10, 20), (400, 50), (60, 700), (300, 500)]:
+            lat, lng = _true_latlng(x, y)
+            ControlPoint.objects.create(map=self.hmap, x=x, y=y, lat=lat, lng=lng)
+        apply_georeference(self.hmap)
+
+    def test_empty_state_when_nothing_is_aligned(self):
+        response = self.client.get("/map/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No maps are aligned yet")
+        self.assertNotContains(response, 'id="viewer-map"')
+
+    def test_aligned_map_is_offered_and_preselected(self):
+        self.align_harrisonburg()
+        response = self.client.get(f"/map/?map={self.hmap.pk}")
+        self.assertContains(response, 'id="viewer-map"')
+        self.assertContains(response, self.hmap.image.url)
+        self.assertEqual(response.context["selected"], self.hmap.pk)
+        # The unaligned 1892 quad is not offered
+        self.assertNotContains(response, "Quadrangle for Harrisonburg")
+
+    def test_bad_map_parameter_falls_back_to_first_map(self):
+        self.align_harrisonburg()
+        for bad in ["999", "abc", "\u00b2"]:
+            response = self.client.get("/map/", {"map": bad})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.context["selected"], self.hmap.pk)
+
+    def test_nav_and_view_on_map_links(self):
+        # "View on map" only appears once a map is aligned
+        self.assertNotContains(self.client.get("/"), "View on map")
+        self.align_harrisonburg()
+        response = self.client.get("/")
+        self.assertContains(response, 'href="/map/"')
+        self.assertContains(response, f'href="/map/?map={self.hmap.pk}"')

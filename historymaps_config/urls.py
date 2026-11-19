@@ -26,6 +26,8 @@ urlpatterns = [
     path("catalog/", include("catalog.urls")),
     path("", views.home, name="home"),
     path("settings/", views.settings, name="settings"),
+    # Public viewer: historical maps over today's map
+    path("map/", views.map_view, name="map"),
 ]
 
 from django.conf import settings

@@ -75,6 +75,48 @@ def help_page(request):
     return render(request, "catalog/help.html")
 
 
+# === MAP VIEWER (public) ===
+# Shows every aligned historical map over today's map. ?map=<id> picks which one
+# is shown first (the "View on map" links on the homepage use this).
+def map_view(request):
+    # Only maps the georeference tool has aligned (they have overlay corners)
+    maps = HistoricalMap.objects.filter(is_georeferenced=True, corners__isnull=False)
+    viewer_maps = [
+        {
+            "id": m.pk,
+            "title": m.title,
+            "year": m.year,
+            "imageUrl": m.image.url,
+            "corners": m.corners,
+        }
+        for m in maps
+    ]
+
+    # Start on the requested map if it's one of them, otherwise the oldest
+    ids = [m["id"] for m in viewer_maps]
+    try:
+        requested = int(request.GET.get("map", ""))
+    except ValueError:
+        requested = None
+    selected = requested if requested in ids else (ids[0] if ids else None)
+
+    # Everything the page script needs, passed safely via json_script
+    viewer_data = {
+        "maps": viewer_maps,
+        "selected": selected,
+        "messages": {
+            "locating": _("Finding your location…"),
+            "located": _("You are here (within about %s m)."),
+            "locateError": _("Couldn't get your location:"),
+        },
+    }
+    return render(
+        request,
+        "catalog/map.html",
+        {"viewer_maps": viewer_maps, "selected": selected, "viewer_data": viewer_data},
+    )
+
+
 # === GEOREFERENCE TOOL (staff only) ===
 # GET: shows the scan next to a live map so staff can click matching points.
 # POST: receives the points as JSON, replaces the map's control points, fits the
