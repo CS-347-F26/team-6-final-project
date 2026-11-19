@@ -71,6 +71,27 @@ msgstr "Empieza a explorar"
 msgid "Historical maps"
 msgstr "Mapas históricos"
 
+msgid "Search historical maps"
+msgstr "Buscar mapas históricos"
+
+msgid "Search by place"
+msgstr "Buscar por lugar"
+
+msgid "Year"
+msgstr "Año"
+
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Longitude"
+msgstr "Longitud"
+
+msgid "Search Maps"
+msgstr "Buscar mapas"
+
+msgid "Clear"
+msgstr "Limpiar"
+
 msgid "A growing collection of places and times."
 msgstr "Una colección de lugares y épocas que sigue creciendo."
 

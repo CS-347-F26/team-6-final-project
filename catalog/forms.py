@@ -1,16 +1,19 @@
 # catalog/forms.py
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class MapSearchForm(forms.Form):
     query = forms.CharField(
+        label=_("Search by place"),
         required=False,
         widget=forms.TextInput(
             attrs={"placeholder": "Search places (e.g., Harrisonburg)..."}
         ),
     )
     year = forms.IntegerField(
+        label=_("Year"),
         required=False,
         widget=forms.NumberInput(
             attrs={
@@ -23,6 +26,7 @@ class MapSearchForm(forms.Form):
         ),
     )
     lat = forms.FloatField(
+        label=_("Latitude"),
         required=False,
         widget=forms.NumberInput(
             attrs={
@@ -36,6 +40,7 @@ class MapSearchForm(forms.Form):
         ),
     )
     lng = forms.FloatField(
+        label=_("Longitude"),
         required=False,
         widget=forms.NumberInput(
             attrs={
