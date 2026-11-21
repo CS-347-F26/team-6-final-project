@@ -184,15 +184,23 @@ class HomePageTests(TestCase):
 
 
 # Checks the seed migrations (the test DB runs every migration):
-# 0004 corrected the year, 0005 aligned Harrisonburg; the 1892 quad isn't aligned yet
+# 0004 corrected the year, 0005 aligned Harrisonburg, 0006 aligned the 1892 quad
 class SeedMapTests(TestCase):
     def setUp(self):
         self.harrisonburg = HistoricalMap.objects.get(title="Harrisonburg Map")
+        self.quad = HistoricalMap.objects.get(title="Quadrangle for Harrisonburg, VA")
 
     def test_seed_maps_are_corrected(self):
         self.assertEqual(self.harrisonburg.year, 1877)
-        quad = HistoricalMap.objects.get(title="Quadrangle for Harrisonburg, VA")
-        self.assertFalse(quad.is_georeferenced)
+
+    # 0006: the quad uses the browser-friendly JPEG and is aligned by its 4 corners
+    def test_quad_is_aligned_out_of_the_box(self):
+        self.assertTrue(self.quad.is_georeferenced)
+        self.assertTrue(self.quad.image.name.endswith(".jpg"))
+        self.assertEqual(self.quad.control_points.count(), 4)
+        # Its corner points fit almost perfectly (the stored error is in meters)
+        self.assertLess(self.quad.rms_error, 10)
+        self.assertContains(self.client.get("/"), "Quadrangle for Harrisonburg")
 
     def test_harrisonburg_is_aligned_out_of_the_box(self):
         self.assertTrue(self.harrisonburg.is_georeferenced)
@@ -200,17 +208,17 @@ class SeedMapTests(TestCase):
         # It shows up on the main map page with no clicking needed
         self.assertContains(self.client.get("/"), "Harrisonburg Map")
 
-    # The corners stored in 0005 must match a fresh fit of its points (within ~1 m)
+    # The corners stored in 0005 and 0006 must match a fresh fit of their points
+    # (within ~1 m), using the real image sizes
     def test_seeded_corners_match_seeded_points(self):
-        points = list(
-            self.harrisonburg.control_points.values_list("x", "y", "lat", "lng")
-        )
-        to_latlng = fit_affine(points)
-        width, height = self.harrisonburg.image.width, self.harrisonburg.image.height
-        pixels = {"topleft": (0, 0), "topright": (width, 0), "bottomleft": (0, height)}
-        for name, (x, y) in pixels.items():
-            for got, want in zip(self.harrisonburg.corners[name], to_latlng(x, y)):
-                self.assertAlmostEqual(got, want, delta=1e-5)
+        for hmap in (self.harrisonburg, self.quad):
+            points = list(hmap.control_points.values_list("x", "y", "lat", "lng"))
+            to_latlng = fit_affine(points)
+            width, height = hmap.image.width, hmap.image.height
+            pixels = {"topleft": (0, 0), "topright": (width, 0), "bottomleft": (0, height)}
+            for name, (x, y) in pixels.items():
+                for got, want in zip(hmap.corners[name], to_latlng(x, y)):
+                    self.assertAlmostEqual(got, want, delta=1e-5)
 
 
 # Checks the staff-only georeferencing tool: who can open it, saving, and bad input
@@ -271,10 +279,13 @@ class GeoreferenceToolTests(TestCase):
 
 # Checks the public map viewer (the main page), its nav link, and the homepage "View on map" links
 class MapViewerTests(TestCase):
-    # Swap the already-aligned seeded Harrisonburg map for a blank one; the
-    # unaligned 1892 quad stays, so tests can check it is left out
+    # Swap the already-aligned seeded Harrisonburg map for a blank one, and mark
+    # the 1892 quad unaligned so tests can check unaligned maps are left out
     def setUp(self):
         HistoricalMap.objects.filter(title="Harrisonburg Map").delete()
+        HistoricalMap.objects.filter(title="Quadrangle for Harrisonburg, VA").update(
+            is_georeferenced=False
+        )
         self.hmap = _blank_map()
 
     # Aligns the test map with perfect synthetic points
