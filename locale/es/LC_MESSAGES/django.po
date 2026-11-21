@@ -253,3 +253,6 @@ msgstr "Estás aquí (con un margen de unos %s m)."
 
 msgid "Couldn't get your location:"
 msgstr "No se pudo obtener tu ubicación:"
+
+msgid "About"
+msgstr "Acerca de"

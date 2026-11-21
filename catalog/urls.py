@@ -16,10 +16,11 @@ from . import views
 
 urlpatterns = [
     # path("", views.index, name="index"),
-    path("", views.home, name="home"),  # Ensure home is mapped
+    # The map viewer is the main page; the old intro + map search lives at /about/
+    path("", views.map_view, name="map"),
+    path("about/", views.home, name="about"),
     path("settings/", views.settings, name="settings"),  # Ensure settings is mapped
     path("help/", views.help_page, name="help"),
     # Staff-only tool for aligning a scanned map to the real world
     path("maps/<int:pk>/georeference/", views.georeference, name="georeference"),
-    path("map/", views.map_view, name="map"),
 ]

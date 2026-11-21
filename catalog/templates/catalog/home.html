@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 {% load i18n static %}
 
-{% block title %}{% trans "Then & There | History Maps" %}{% endblock %}
+{% block title %}{% trans "About" %} | Then &amp; There{% endblock %}
 
 {% block meta_description %}{% trans 'Explore the history of the places around you through historical maps.' %}{% endblock %}
 
@@ -65,7 +65,7 @@
     <section class="maps" id="maps">
         <div class="maps-inner">
             <div class="search-container">
-                <form class="search-form" method="GET" action="{% url 'home' %}" aria-label="{% trans 'Search historical maps' %}">
+                <form class="search-form" method="GET" action="{% url 'about' %}" aria-label="{% trans 'Search historical maps' %}">
                     <div class="search-field">
                         {{ form.query.label_tag }}
                         {{ form.query }}
@@ -83,7 +83,7 @@
                         {{ form.lng }}
                     </div>
                     <button type="submit" class="button">{% trans "Search Maps" %}</button>
-                    <a class="clear-search" href="{% url 'home' %}">{% trans "Clear" %}</a>
+                    <a class="clear-search" href="{% url 'about' %}">{% trans "Clear" %}</a>
                 </form>
             </div>
             <p class="eyebrow">{% trans "Start exploring" %}</p>

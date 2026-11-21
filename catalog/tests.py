@@ -98,7 +98,7 @@ class RequestLoggingMiddlewareTests(TestCase):
 
 class HomePageTests(TestCase):
     def test_homepage_loads(self):
-        response = self.client.get("/")
+        response = self.client.get("/about/")
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "History, right where you are.")
@@ -127,7 +127,7 @@ class HomePageTests(TestCase):
         self.assertContains(response, "Idioma")
         self.assertContains(response, "Guardar idioma")
         self.assertContains(response, "Más preferencias próximamente")
-        homepage = self.client.get("/")
+        homepage = self.client.get("/about/")
         self.assertEqual(homepage.status_code, 200)
         self.assertContains(homepage, "Historia, justo donde estás.")
         self.assertContains(homepage, "Estamos agregando mapas")
@@ -135,16 +135,16 @@ class HomePageTests(TestCase):
     def test_homepage_shows_empty_state_without_maps(self):
         # Migration 0002 seeds two maps; remove them to see the empty state
         HistoricalMap.objects.all().delete()
-        response = self.client.get("/")
+        response = self.client.get("/about/")
 
         self.assertContains(response, "Maps are being added")
 
     def test_map_search_fields_have_visible_labels(self):
-        response = self.client.get("/")
+        response = self.client.get("/about/")
 
         self.assertContains(
             response,
-            '<form class="search-form" method="GET" action="/" aria-label="Search historical maps">',
+            '<form class="search-form" method="GET" action="/about/" aria-label="Search historical maps">',
         )
         for field_id, label in (
             ("id_query", "Search by place:"),
@@ -157,7 +157,7 @@ class HomePageTests(TestCase):
 
     def test_map_search_field_labels_are_translated(self):
         self.client.post("/i18n/setlang/", {"language": "es", "next": "/"})
-        response = self.client.get("/")
+        response = self.client.get("/about/")
 
         self.assertContains(
             response, '<label for="id_query">Buscar por lugar:</label>'
@@ -177,7 +177,7 @@ class HomePageTests(TestCase):
             west=-78.9,
         )
 
-        response = self.client.get("/")
+        response = self.client.get("/about/")
 
         self.assertContains(response, "Downtown Harrisonburg")
         self.assertContains(response, "1885")
@@ -197,8 +197,8 @@ class SeedMapTests(TestCase):
     def test_harrisonburg_is_aligned_out_of_the_box(self):
         self.assertTrue(self.harrisonburg.is_georeferenced)
         self.assertEqual(self.harrisonburg.control_points.count(), 3)
-        # It shows up on /map/ with no clicking needed
-        self.assertContains(self.client.get("/map/"), "Harrisonburg Map")
+        # It shows up on the main map page with no clicking needed
+        self.assertContains(self.client.get("/"), "Harrisonburg Map")
 
     # The corners stored in 0005 must match a fresh fit of its points (within ~1 m)
     def test_seeded_corners_match_seeded_points(self):
@@ -269,7 +269,7 @@ class GeoreferenceToolTests(TestCase):
         self.assertEqual(self.hmap.control_points.count(), 1)
 
 
-# Checks the public /map/ viewer, its nav link, and the homepage "View on map" links
+# Checks the public map viewer (the main page), its nav link, and the homepage "View on map" links
 class MapViewerTests(TestCase):
     # Swap the already-aligned seeded Harrisonburg map for a blank one; the
     # unaligned 1892 quad stays, so tests can check it is left out
@@ -285,14 +285,14 @@ class MapViewerTests(TestCase):
         apply_georeference(self.hmap)
 
     def test_empty_state_when_nothing_is_aligned(self):
-        response = self.client.get("/map/")
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No maps are aligned yet")
         self.assertNotContains(response, 'id="viewer-map"')
 
     def test_aligned_map_is_offered_and_preselected(self):
         self.align_harrisonburg()
-        response = self.client.get(f"/map/?map={self.hmap.pk}")
+        response = self.client.get(f"/?map={self.hmap.pk}")
         self.assertContains(response, 'id="viewer-map"')
         self.assertContains(response, self.hmap.image.url)
         self.assertEqual(response.context["selected"], self.hmap.pk)
@@ -302,14 +302,14 @@ class MapViewerTests(TestCase):
     def test_bad_map_parameter_falls_back_to_first_map(self):
         self.align_harrisonburg()
         for bad in ["999", "abc", "\u00b2"]:
-            response = self.client.get("/map/", {"map": bad})
+            response = self.client.get("/", {"map": bad})
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.context["selected"], self.hmap.pk)
 
     def test_nav_and_view_on_map_links(self):
         # "View on map" only appears once a map is aligned
-        self.assertNotContains(self.client.get("/"), "View on map")
+        self.assertNotContains(self.client.get("/about/"), "View on map")
         self.align_harrisonburg()
-        response = self.client.get("/")
-        self.assertContains(response, 'href="/map/"')
-        self.assertContains(response, f'href="/map/?map={self.hmap.pk}"')
+        response = self.client.get("/about/")
+        self.assertContains(response, 'href="/"')
+        self.assertContains(response, f'href="/?map={self.hmap.pk}"')

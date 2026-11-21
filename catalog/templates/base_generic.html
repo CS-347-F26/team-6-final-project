@@ -15,10 +15,10 @@
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="{% url 'home' %}">Then <span>&amp;</span> There</a>
+        <a class="brand" href="{% url 'map' %}">Then <span>&amp;</span> There</a>
         <nav aria-label="{% trans 'Main navigation' %}">
-            <a class="header-link" href="{% url 'home' %}">{% trans "Home" %}</a>
             <a class="header-link" href="{% url 'map' %}">{% trans "Map" %}</a>
+            <a class="header-link" href="{% url 'about' %}">{% trans "About" %}</a>
             <a class="header-link" href="{% url 'help' %}">{% trans "Help" %}</a>
             <a class="header-link" href="{% url 'settings' %}">{% trans "Settings" %}</a>
         </nav>
