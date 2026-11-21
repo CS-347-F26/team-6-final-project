@@ -13,48 +13,45 @@
 {% block content %}
 <section class="map-viewer">
     <h1>{% trans "Then and now" %}</h1>
+    <!-- One-line how-to; the full intro lives on the About page -->
+    <p class="viewer-intro">
+        {% trans "Move the map or show your location. Historical maps that cover what you see appear as buttons; pick one to lay it over today's map." %}
+        <a href="{% url 'about' %}">{% trans "About this project" %}</a>
+    </p>
 
-    {% if viewer_maps %}
-        <!-- Controls: which map, how see-through, where am I -->
-        <div class="viewer-controls">
-            <div class="viewer-control">
-                <label for="map-select">{% trans "Historical map" %}</label>
-                <select id="map-select">
-                    {% for m in viewer_maps %}
-                        <option value="{{ m.id }}"{% if m.id == selected %} selected{% endif %}>{{ m.year }} — {{ m.title }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="viewer-control">
-                <label for="map-opacity">{% trans "Historical map opacity" %}</label>
-                <input type="range" id="map-opacity" min="0" max="1" step="0.05" value="0.75">
-            </div>
-            <button type="button" id="locate-me" class="button">{% trans "Show my location" %}</button>
+    <!-- Buttons for the historical maps in view (filled in by map.js as the map moves) -->
+    <div class="viewer-choices">
+        <h2 id="map-buttons-label" class="viewer-choices-label">{% trans "Historical maps here" %}</h2>
+        <div id="map-buttons" class="map-buttons" role="group" aria-labelledby="map-buttons-label"></div>
+        <!-- Shown when no map covers the view (read aloud by screen readers) -->
+        <p id="map-buttons-empty" class="map-buttons-empty" aria-live="polite">{% if not viewer_maps %}{% trans "No maps are aligned yet" %}. {% trans "Historical maps appear here once they've been matched to today's map." %}{% endif %}</p>
+    </div>
+
+    <!-- Controls: how see-through, where am I -->
+    <div class="viewer-controls">
+        <div class="viewer-control">
+            <label for="map-opacity">{% trans "Historical map opacity" %}</label>
+            <input type="range" id="map-opacity" min="0" max="1" step="0.05" value="0.75">
         </div>
+        <button type="button" id="locate-me" class="button">{% trans "Show my location" %}</button>
+    </div>
 
-        <!-- Status for location (read aloud by screen readers) -->
-        <p id="viewer-status" class="georef-status" aria-live="polite"></p>
+    <!-- Status for location (read aloud by screen readers) -->
+    <p id="viewer-status" class="georef-status" aria-live="polite"></p>
 
-        <!-- The map itself -->
-        <div id="viewer-map" class="map-pane viewer-map" role="application"
-             aria-label="{% trans 'Historical map shown over a present-day map' %}"></div>
+    <!-- The map itself -->
+    <div id="viewer-map" class="map-pane viewer-map" role="application"
+         aria-label="{% trans 'Historical map shown over a present-day map' %}"></div>
 
-        <!-- Data for the page script: aligned maps, which one to show, translated messages -->
-        {{ viewer_data|json_script:"viewer-data" }}
+    <!-- Data for the page script: aligned maps, which one to show, translated messages -->
+    {{ viewer_data|json_script:"viewer-data" }}
 
-        <!-- Leaflet, the rotated-image plugin, the shared base map, then this page's script -->
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
-        <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"
-                integrity="sha384-7oBmAX73N5DMKPSTLhXDB3qYFCIcDn1NtkLTsqtvLbzJjwYn/GF+0TnSMG6o4Bg9" crossorigin=""></script>
-        <script src="{% static 'catalog/js/basemap.js' %}"></script>
-        <script src="{% static 'catalog/js/map.js' %}"></script>
-    {% else %}
-        <!-- Nothing aligned yet -->
-        <div class="empty-state">
-            <h2>{% trans "No maps are aligned yet" %}</h2>
-            <p>{% trans "Historical maps appear here once they've been matched to today's map." %}</p>
-        </div>
-    {% endif %}
+    <!-- Leaflet, the rotated-image plugin, the shared base map, then this page's script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"
+            integrity="sha384-7oBmAX73N5DMKPSTLhXDB3qYFCIcDn1NtkLTsqtvLbzJjwYn/GF+0TnSMG6o4Bg9" crossorigin=""></script>
+    <script src="{% static 'catalog/js/basemap.js' %}"></script>
+    <script src="{% static 'catalog/js/map.js' %}"></script>
 </section>
 {% endblock %}

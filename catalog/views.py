@@ -76,8 +76,8 @@ def help_page(request):
 
 
 # === MAP VIEWER (public) ===
-# Shows every aligned historical map over today's map. ?map=<id> picks which one
-# is shown first (the "View on map" links on the homepage use this).
+# The main page. Today's map plus a button for each aligned historical map in view.
+# ?map=<id> picks which one is shown first (the About page's "View on map" links).
 def map_view(request):
     # Only maps the georeference tool has aligned (they have overlay corners)
     maps = HistoricalMap.objects.filter(is_georeferenced=True, corners__isnull=False)
@@ -92,13 +92,14 @@ def map_view(request):
         for m in maps
     ]
 
-    # Start on the requested map if it's one of them, otherwise the oldest
+    # Start on the requested map if it's one of them; otherwise none is picked
+    # yet and the page zooms out to show every map's button
     ids = [m["id"] for m in viewer_maps]
     try:
         requested = int(request.GET.get("map", ""))
     except ValueError:
         requested = None
-    selected = requested if requested in ids else (ids[0] if ids else None)
+    selected = requested if requested in ids else None
 
     # Everything the page script needs, passed safely via json_script
     viewer_data = {
@@ -108,6 +109,8 @@ def map_view(request):
             "locating": _("Finding your location…"),
             "located": _("You are here (within about %s m)."),
             "locateError": _("Couldn't get your location:"),
+            "noneHere": _("No historical maps cover this area."),
+            "showAll": _("Show all maps"),
         },
     }
     return render(

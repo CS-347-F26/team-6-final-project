@@ -284,11 +284,20 @@ class MapViewerTests(TestCase):
             ControlPoint.objects.create(map=self.hmap, x=x, y=y, lat=lat, lng=lng)
         apply_georeference(self.hmap)
 
+    # The main page still shows today's map when no historical map is aligned
     def test_empty_state_when_nothing_is_aligned(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No maps are aligned yet")
-        self.assertNotContains(response, 'id="viewer-map"')
+        self.assertContains(response, 'id="viewer-map"')
+
+    # Maps are picked with buttons (built by map.js), not the old dropdown
+    def test_map_buttons_replace_dropdown(self):
+        self.align_harrisonburg()
+        response = self.client.get("/")
+        self.assertContains(response, 'id="map-buttons"')
+        self.assertNotContains(response, 'id="map-select"')
+        self.assertNotContains(response, "No maps are aligned yet")
 
     def test_aligned_map_is_offered_and_preselected(self):
         self.align_harrisonburg()
@@ -299,12 +308,13 @@ class MapViewerTests(TestCase):
         # The unaligned 1892 quad is not offered
         self.assertNotContains(response, "Quadrangle for Harrisonburg")
 
-    def test_bad_map_parameter_falls_back_to_first_map(self):
+    # No (or a bad) ?map= means nothing is preselected; the page shows all maps' buttons
+    def test_bad_map_parameter_selects_nothing(self):
         self.align_harrisonburg()
-        for bad in ["999", "abc", "\u00b2"]:
+        for bad in ["", "999", "abc", "\u00b2"]:
             response = self.client.get("/", {"map": bad})
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.context["selected"], self.hmap.pk)
+            self.assertIsNone(response.context["selected"])
 
     def test_nav_and_view_on_map_links(self):
         # "View on map" only appears once a map is aligned

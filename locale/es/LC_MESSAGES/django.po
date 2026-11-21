@@ -256,3 +256,18 @@ msgstr "No se pudo obtener tu ubicación:"
 
 msgid "About"
 msgstr "Acerca de"
+
+msgid "Move the map or show your location. Historical maps that cover what you see appear as buttons; pick one to lay it over today's map."
+msgstr "Mueve el mapa o muestra tu ubicación. Los mapas históricos que cubren lo que ves aparecen como botones; elige uno para colocarlo sobre el mapa actual."
+
+msgid "About this project"
+msgstr "Acerca de este proyecto"
+
+msgid "Historical maps here"
+msgstr "Mapas históricos aquí"
+
+msgid "No historical maps cover this area."
+msgstr "Ningún mapa histórico cubre esta zona."
+
+msgid "Show all maps"
+msgstr "Mostrar todos los mapas"

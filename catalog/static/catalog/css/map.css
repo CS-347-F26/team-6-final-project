@@ -139,7 +139,7 @@
     width: 1px;
 }
 
-/* === MAP VIEWER (/map/) === */
+/* === MAP VIEWER (main page) === */
 .map-viewer {
     margin: 0 auto;
     max-width: 1200px;
@@ -152,7 +152,7 @@
     margin: 0 0 16px;
 }
 
-/* Picker, slider, and location button on one wrapping row */
+/* Slider and location button on one wrapping row */
 .viewer-controls {
     align-items: flex-end;
     display: flex;
@@ -169,12 +169,66 @@
 
 .viewer-control label { font-size: .85rem; font-weight: 700; }
 
-.viewer-control select {
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    font: inherit;
-    padding: 10px;
+/* One-line how-to under the heading */
+.viewer-intro {
+    color: var(--muted);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0 0 16px;
+    max-width: 70ch;
 }
+
+.viewer-intro a { color: var(--green); }
+
+/* === MAP BUTTONS (maps in view) === */
+.viewer-choices {
+    font-family: Arial, sans-serif;
+    margin-bottom: 16px;
+}
+
+.viewer-choices-label {
+    font-size: .85rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.map-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Outlined when off, filled green when its map is showing */
+.map-choice {
+    background: var(--white);
+    border: 2px solid var(--green);
+    border-radius: 999px;
+    color: var(--green);
+    cursor: pointer;
+    font: 700 .9rem Arial, sans-serif;
+    padding: 8px 16px;
+}
+
+.map-choice:hover { background: var(--paper); }
+
+.map-choice[aria-pressed="true"] {
+    background: var(--green);
+    color: var(--white);
+}
+
+.map-choice:focus-visible,
+.link-button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* "No maps here" line; empty (and collapsed) when there are buttons */
+.map-buttons-empty {
+    color: var(--muted);
+    margin: 0;
+}
+
+.map-buttons-empty:empty { display: none; }
 
 /* Taller map than the tool's panes; it's the whole point of the page */
 .viewer-map { height: 70vh; }
